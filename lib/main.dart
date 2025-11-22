@@ -1,0 +1,198 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_shop_sample/Data/repository/authentication_repository.dart';
+import 'package:flutter_shop_sample/constants/colors.dart';
+import 'package:flutter_shop_sample/di/di.dart';
+import 'package:flutter_shop_sample/screens/card_screen.dart';
+import 'package:flutter_shop_sample/screens/category_screen.dart';
+import 'package:flutter_shop_sample/screens/home_screen.dart';
+import 'package:flutter_shop_sample/screens/profile_screen.dart';
+import 'package:flutter_shop_sample/utility/auth_manager.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await getItInit();
+  runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int selectedindex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                var either = await AuthenticationRepository().login(
+                  'ali1515',
+                  '123456789',
+                );
+              },
+              child: Text('login'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                AuthManager.logOut();
+              },
+              child: Text('logout'),
+            ),
+            ValueListenableBuilder(
+              valueListenable: AuthManager.authChangeNotifire,
+              builder: (context, value, child) {
+                if (value == null || value.isEmpty) {
+                  return Text(
+                    "شماوارد نشده اید",
+                    style: TextStyle(fontSize: 20),
+                  );
+                } else {
+                  return Text(
+                    "شماوارد شده اید",
+                    style: TextStyle(fontSize: 20),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+
+        // body: IndexedStack(index: selectedindex, children: getScreen()),
+        bottomNavigationBar: ClipRRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
+            child: BottomNavigationBar(
+              currentIndex: selectedindex,
+              onTap: (int index) {
+                setState(() {
+                  selectedindex = index;
+                });
+              },
+              selectedLabelStyle: TextStyle(
+                fontFamily: 'SB',
+                fontSize: 10,
+                color: CustomColors.blue,
+              ),
+              unselectedLabelStyle: TextStyle(
+                fontFamily: 'SB',
+                fontSize: 10,
+                color: Colors.black,
+              ),
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Image.asset('assets/images/icon_profile.png'),
+                  activeIcon: Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blue,
+                            blurRadius: 20,
+                            spreadRadius: -7,
+                            offset: Offset(00, 13),
+                          ),
+                        ],
+                      ),
+                      child: Image.asset(
+                        'assets/images/icon_profile_active.png',
+                      ),
+                    ),
+                  ),
+                  label: 'حساب کاربری',
+                ),
+                BottomNavigationBarItem(
+                  icon: Image.asset('assets/images/icon_basket.png'),
+                  activeIcon: Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blue,
+                            blurRadius: 20,
+                            spreadRadius: -7,
+                            offset: Offset(00, 13),
+                          ),
+                        ],
+                      ),
+                      child: Image.asset(
+                        'assets/images/icon_basket_active.png',
+                      ),
+                    ),
+                  ),
+                  label: 'سبد خرید',
+                ),
+                BottomNavigationBarItem(
+                  icon: Image.asset('assets/images/icon_category.png'),
+                  activeIcon: Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blue,
+                            blurRadius: 20,
+                            spreadRadius: -7,
+                            offset: Offset(00, 13),
+                          ),
+                        ],
+                      ),
+                      child: Image.asset(
+                        'assets/images/icon_category_active.png',
+                      ),
+                    ),
+                  ),
+                  label: 'دسته بندی',
+                ),
+                BottomNavigationBarItem(
+                  icon: Image.asset('assets/images/icon_home.png'),
+                  activeIcon: Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blue,
+                            blurRadius: 20,
+                            spreadRadius: -7,
+                            offset: Offset(00, 13),
+                          ),
+                        ],
+                      ),
+                      child: Image.asset('assets/images/icon_home_active.png'),
+                    ),
+                  ),
+                  label: 'خانه',
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> getScreen() {
+    return <Widget>[
+      ProfileScreen(),
+      CardScreen(),
+      CategoryScreen(),
+      HomeScreen(),
+    ];
+  }
+}
