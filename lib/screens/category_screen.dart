@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop_sample/Data/repository/category_repository.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 
 class CategoryScreen extends StatelessWidget {
@@ -11,6 +12,25 @@ class CategoryScreen extends StatelessWidget {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
+            SliverToBoxAdapter(
+              child: ElevatedButton(
+                onPressed: () async {
+                  var repository = CategoryRepository();
+                  var either = await repository.getCategories();
+                  either.fold(
+                    (l) {
+                      print(l);
+                    },
+                    (r) {
+                      r.forEach((element) {
+                        print(element.title);
+                      });
+                    },
+                  );
+                },
+                child: Text('hello'),
+              ),
+            ),
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.only(left: 44, right: 44, bottom: 32),

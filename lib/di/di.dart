@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_shop_sample/Data/dataSource/authentication_data_source.dart';
+import 'package:flutter_shop_sample/Data/dataSource/category_data_source.dart';
 import 'package:flutter_shop_sample/Data/repository/authentication_repository.dart';
+import 'package:flutter_shop_sample/Data/repository/category_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,11 +17,15 @@ Future<void> getItInit() async {
   locator.registerFactory<IAuthenticationDataSource>(
     () => AuthenticationRemote(),
   );
+  locator.registerFactory<ICategoryDataSource>(
+    () => CategoryDataSourceRemote(),
+  );
 
   //repositories
   locator.registerFactory<IAuthenticationRepository>(
     () => AuthenticationRepository(),
   );
+  locator.registerFactory<ICategoryRepository>(() => CategoryRepository());
 
   //component
   locator.registerSingleton<SharedPreferences>(

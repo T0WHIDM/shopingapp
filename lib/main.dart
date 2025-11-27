@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_shop_sample/Data/repository/authentication_repository.dart';
 import 'package:flutter_shop_sample/bloc/authitication/auth_bloc.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/di/di.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_shop_sample/screens/category_screen.dart';
 import 'package:flutter_shop_sample/screens/home_screen.dart';
 import 'package:flutter_shop_sample/screens/login_screen.dart';
 import 'package:flutter_shop_sample/screens/profile_screen.dart';
-import 'package:flutter_shop_sample/utility/auth_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,12 +32,12 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: BlocProvider(
-          create: (context) => AuthBloc(),
-          child: LoginScreen(),
-        ),
+        // body: BlocProvider(
+        //   create: (context) => AuthBloc(),
+        //   child: LoginScreen(),
+        // ),
 
-        // body: IndexedStack(index: selectedindex, children: getScreen()),
+        body: IndexedStack(index: selectedindex, children: getScreen()),
         bottomNavigationBar: ClipRRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
