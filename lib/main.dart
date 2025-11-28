@@ -1,15 +1,13 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_shop_sample/bloc/authitication/auth_bloc.dart';
 import 'package:flutter_shop_sample/bloc/category/category_bloc.dart';
+import 'package:flutter_shop_sample/bloc/home/home_bloc.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/di/di.dart';
 import 'package:flutter_shop_sample/screens/card_screen.dart';
 import 'package:flutter_shop_sample/screens/category_screen.dart';
 import 'package:flutter_shop_sample/screens/home_screen.dart';
-import 'package:flutter_shop_sample/screens/login_screen.dart';
 import 'package:flutter_shop_sample/screens/profile_screen.dart';
 
 void main() async {
@@ -164,7 +162,7 @@ class _MyAppState extends State<MyApp> {
         create: (context) => CategoryBloc(),
         child: CategoryScreen(),
       ),
-      HomeScreen(),
+      BlocProvider(create: (context) => HomeBloc(), child: HomeScreen()),
     ];
   }
 }
