@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shop_sample/Data/model/banner.dart';
+import 'package:flutter_shop_sample/Data/model/category.dart';
 import 'package:flutter_shop_sample/bloc/home/home_bloc.dart';
 import 'package:flutter_shop_sample/bloc/home/home_event.dart';
 import 'package:flutter_shop_sample/bloc/home/home_state.dart';
@@ -48,7 +49,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
 
                 _GetCategoryListTitle(),
-                _GetCategoryList(),
+                if (state is HomeSuccessResponseState) ...[
+                  state.categoryList.fold(
+                    (l) {
+                      return SliverToBoxAdapter(child: Text(l));
+                    },
+                    (r) {
+                      return _GetCategoryList(listCategories: r);
+                    },
+                  ),
+                ],
+
                 _GetBestSellerTitle(),
                 _GetBestSellerProdouct(),
                 _MostViewTitle(),
@@ -176,7 +187,9 @@ class _GetBestSellerTitle extends StatelessWidget {
 }
 
 class _GetCategoryList extends StatelessWidget {
-  const _GetCategoryList({super.key});
+  List<Category>? listCategories;
+
+  _GetCategoryList({super.key, required this.listCategories});
 
   @override
   Widget build(BuildContext context) {
@@ -187,11 +200,11 @@ class _GetCategoryList extends StatelessWidget {
           height: 100,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 10,
+            itemCount: listCategories?.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(left: 20.0),
-                child: CategoryItemChip(),
+                child: CategoryItemChip(category: listCategories![index]),
               );
             },
           ),
