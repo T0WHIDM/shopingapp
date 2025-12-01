@@ -34,7 +34,15 @@ class _HomeScreenState extends State<HomeScreen> {
             return CustomScrollView(
               slivers: [
                 if (state is HomeLoadingState) ...[
-                  SliverToBoxAdapter(child: CircularProgressIndicator()),
+                  SliverToBoxAdapter(
+                    child: Center(
+                      child: SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ),
                 ],
                 _SearchBox(),
                 if (state is HomeSuccessResponseState) ...[
@@ -114,17 +122,18 @@ class _MostViewTitle extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Image.asset('assets/images/icon_left_categroy.png'),
-            SizedBox(width: 10),
-            Text(
-              'مشاهده همه',
-              style: TextStyle(fontFamily: 'SB', color: CustomColors.blue),
-            ),
-            Spacer(),
             Text(
               'پر بازدید ترین ها',
               style: TextStyle(fontFamily: 'SB', color: CustomColors.gery),
             ),
+            Spacer(),
+
+            Text(
+              'مشاهده همه',
+              style: TextStyle(fontFamily: 'SB', color: CustomColors.blue),
+            ),
+            SizedBox(width: 10),
+            Image.asset('assets/images/icon_left_categroy.png'),
           ],
         ),
       ),
@@ -168,17 +177,18 @@ class _GetBestSellerTitle extends StatelessWidget {
         padding: const EdgeInsets.only(left: 44, right: 44, bottom: 20),
         child: Row(
           children: [
-            Image.asset('assets/images/icon_left_categroy.png'),
-            SizedBox(width: 10),
-            Text(
-              'مشاهده همه',
-              style: TextStyle(fontFamily: 'SB', color: CustomColors.blue),
-            ),
-            Spacer(),
             Text(
               'پرفروش ترین ها',
               style: TextStyle(fontFamily: 'SB', color: CustomColors.gery),
             ),
+            Spacer(),
+
+            Text(
+              'مشاهده همه',
+              style: TextStyle(fontFamily: 'SB', color: CustomColors.blue),
+            ),
+            SizedBox(width: 10),
+            Image.asset('assets/images/icon_left_categroy.png'),
           ],
         ),
       ),
@@ -228,7 +238,7 @@ class _GetCategoryListTitle extends StatelessWidget {
           top: 32,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               'دسته بندی',
@@ -269,10 +279,11 @@ class _SearchBox extends StatelessWidget {
           child: Row(
             children: [
               SizedBox(width: 10),
-              Image.asset('assets/images/icon_apple_blue.png'),
+              Image.asset('assets/images/icon_search.png'),
+              SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  textAlign: TextAlign.end,
+                  textAlign: TextAlign.start,
                   'جستجوی محصولات',
                   style: TextStyle(
                     color: CustomColors.gery,
@@ -281,8 +292,8 @@ class _SearchBox extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 10),
-              Image.asset('assets/images/icon_search.png'),
+
+              Image.asset('assets/images/icon_apple_blue.png'),
               SizedBox(width: 16),
             ],
           ),
