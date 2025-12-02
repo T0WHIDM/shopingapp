@@ -34,55 +34,69 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, state) {
             return CustomScrollView(
               slivers: [
-                if (state is HomeLoadingState) ...[
+                if (state is HomeLoadingState) ...{
                   SliverToBoxAdapter(
-                    child: Center(
-                      child: SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(),
-                      ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-                _SearchBox(),
-                if (state is HomeSuccessResponseState) ...[
-                  state.bannerList.fold(
-                    (l) {
-                      return SliverToBoxAdapter(child: Text(l));
-                    },
-                    (r) {
-                      return _GetBannr(bannerList: r);
-                    },
-                  ),
-                ],
+                } else ...{
+                  _SearchBox(),
+                  if (state is HomeRequestSuccessState) ...[
+                    state.bannerList.fold(
+                      (l) {
+                        return SliverToBoxAdapter(child: Text(l));
+                      },
+                      (r) {
+                        return _GetBannr(bannerList: r);
+                      },
+                    ),
+                  ],
 
-                _GetCategoryListTitle(),
-                if (state is HomeSuccessResponseState) ...[
-                  state.categoryList.fold(
-                    (l) {
-                      return SliverToBoxAdapter(child: Text(l));
-                    },
-                    (r) {
-                      return _GetCategoryList(listCategories: r);
-                    },
-                  ),
-                ],
+                  _GetCategoryListTitle(),
+                  if (state is HomeRequestSuccessState) ...[
+                    state.categoryList.fold(
+                      (l) {
+                        return SliverToBoxAdapter(child: Text(l));
+                      },
+                      (r) {
+                        return _GetCategoryList(listCategories: r);
+                      },
+                    ),
+                  ],
 
-                _GetBestSellerTitle(),
-                if (state is HomeSuccessResponseState) ...[
-                  state.productList.fold(
-                    (l) {
-                      return SliverToBoxAdapter(child: Text(l));
-                    },
-                    (r) {
-                      return _GetBestSellerProdouct(r);
-                    },
-                  ),
-                ],
+                  _GetBestSellerTitle(),
+                  if (state is HomeRequestSuccessState) ...[
+                    state.bestSellerProduct.fold(
+                      (l) {
+                        return SliverToBoxAdapter(child: Text(l));
+                      },
+                      (r) {
+                        return _GetBestSellerProdouct(r);
+                      },
+                    ),
+                  ],
 
-                _MostViewTitle(),
-                _MostViewProdouct(),
+                  _MostViewTitle(),
+                  if (state is HomeRequestSuccessState) ...[
+                    state.hotestProduct.fold(
+                      (l) {
+                        return SliverToBoxAdapter(child: Text(l));
+                      },
+                      (r) {
+                        return _MostViewProdouct(r);
+                      },
+                    ),
+                  ],
+                },
               ],
             );
           },
@@ -93,7 +107,9 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _MostViewProdouct extends StatelessWidget {
-  const _MostViewProdouct({super.key});
+  List<Product> productList;
+
+  _MostViewProdouct(this.productList, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -104,11 +120,11 @@ class _MostViewProdouct extends StatelessWidget {
           height: 200,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 10,
+            itemCount: productList.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(left: 20.0),
-                child: Text('1'),
+                child: ProdouctItem(productList[index]),
               );
             },
           ),
