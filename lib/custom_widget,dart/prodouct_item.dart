@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shop_sample/Data/model/product.dart';
+import 'package:flutter_shop_sample/bloc/product/product_bloc.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/cached_image.dart';
 import 'package:flutter_shop_sample/screens/prodouct_detail_screen.dart';
@@ -16,7 +18,10 @@ class ProdouctItem extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
-              return ProdouctDetailScreen();
+              return BlocProvider(
+                create: (context) => ProductBloc(),
+                child: ProdouctDetailScreen(),
+              );
             },
           ),
         );
