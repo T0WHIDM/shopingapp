@@ -45,7 +45,7 @@ class ProductDetailDataSource extends IProductDetailDataSource {
 
       return respones.data['items']
           .map<VariantsType>(
-            (jsonObject) => ProductImage.fromMapJson(jsonObject),
+            (jsonObject) => VariantsType.fromMapJson(jsonObject),
           )
           .toList();
     } on DioException catch (ex) {
@@ -66,7 +66,7 @@ class ProductDetailDataSource extends IProductDetailDataSource {
       );
 
       return respones.data['items']
-          .map<Variant>((jsonObject) => ProductImage.fromMapJson(jsonObject))
+          .map<Variant>((jsonObject) => Variant.fromMapJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
       throw ApiExeption(ex.response?.statusCode, ex.response?.data['message']);
@@ -83,11 +83,11 @@ class ProductDetailDataSource extends IProductDetailDataSource {
     List<ProductVariant> productVariantList = [];
 
     try {
-      for (var VariantsType in variantTypeList) {
-        variantList
-            .where((element) => element.typeId == VariantsType.id)
+      for (var variantsType in variantTypeList) {
+        var variant = variantList
+            .where((element) => element.typeId == variantsType.id)
             .toList();
-        productVariantList.add(ProductVariant(variantList, VariantsType));
+        productVariantList.add(ProductVariant(variant, variantsType));
       }
 
       return productVariantList;

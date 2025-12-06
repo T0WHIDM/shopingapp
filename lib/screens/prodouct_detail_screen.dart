@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shop_sample/Data/model/product_image.dart';
+import 'package:flutter_shop_sample/Data/model/product_variant.dart';
+import 'package:flutter_shop_sample/Data/model/variant.dart';
 import 'package:flutter_shop_sample/Data/model/variants_type.dart';
 import 'package:flutter_shop_sample/Data/repository/product_detail_repository.dart';
 import 'package:flutter_shop_sample/bloc/product/product_bloc.dart';
@@ -112,123 +114,120 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                     (l) {
                       return SliverToBoxAdapter(child: Text(l));
                     },
-                    (variantList) {
-                      for (var variant in variantList) {
-                        print(variant.variantsType.title);
-                      }
-                      return SliverToBoxAdapter(child: Text('data'));
+                    (productVariantList) {
+                      return VariantContainer(productVariantList);
                     },
                   ),
                 ],
 
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 20.0,
-                      right: 44,
-                      left: 44,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'انتخاب حافظه داخلی',
-                          style: TextStyle(fontSize: 12, fontFamily: 'SM'),
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(left: 10),
-                              height: 25,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                  width: 1,
-                                  color: CustomColors.gery,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '256',
-                                    style: TextStyle(
-                                      fontFamily: 'SB',
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 10),
-                              height: 25,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                  width: 1,
-                                  color: CustomColors.gery,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '128',
-                                    style: TextStyle(
-                                      fontFamily: 'SB',
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 10),
-                              height: 25,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                  width: 1,
-                                  color: CustomColors.gery,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '64',
-                                    style: TextStyle(
-                                      fontFamily: 'SB',
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                // SliverToBoxAdapter(
+                //   child: Padding(
+                //     padding: const EdgeInsets.only(
+                //       top: 20.0,
+                //       right: 44,
+                //       left: 44,
+                //     ),
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.end,
+                //       children: [
+                //         Text(
+                //           'انتخاب حافظه داخلی',
+                //           style: TextStyle(fontSize: 12, fontFamily: 'SM'),
+                //         ),
+                //         SizedBox(height: 10),
+                //         Row(
+                //           mainAxisAlignment: MainAxisAlignment.end,
+                //           children: [
+                //             Container(
+                //               margin: EdgeInsets.only(left: 10),
+                //               height: 25,
+                //               decoration: BoxDecoration(
+                //                 color: Colors.white,
+                //                 border: Border.all(
+                //                   width: 1,
+                //                   color: CustomColors.gery,
+                //                 ),
+                //                 borderRadius: BorderRadius.all(
+                //                   Radius.circular(8),
+                //                 ),
+                //               ),
+                //               child: Padding(
+                //                 padding: const EdgeInsets.symmetric(
+                //                   horizontal: 20.0,
+                //                 ),
+                //                 child: Center(
+                //                   child: Text(
+                //                     '256',
+                //                     style: TextStyle(
+                //                       fontFamily: 'SB',
+                //                       fontSize: 12,
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ),
+                //             ),
+                //             Container(
+                //               margin: EdgeInsets.only(left: 10),
+                //               height: 25,
+                //               decoration: BoxDecoration(
+                //                 color: Colors.white,
+                //                 border: Border.all(
+                //                   width: 1,
+                //                   color: CustomColors.gery,
+                //                 ),
+                //                 borderRadius: BorderRadius.all(
+                //                   Radius.circular(8),
+                //                 ),
+                //               ),
+                //               child: Padding(
+                //                 padding: const EdgeInsets.symmetric(
+                //                   horizontal: 20.0,
+                //                 ),
+                //                 child: Center(
+                //                   child: Text(
+                //                     '128',
+                //                     style: TextStyle(
+                //                       fontFamily: 'SB',
+                //                       fontSize: 12,
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ),
+                //             ),
+                //             Container(
+                //               margin: EdgeInsets.only(left: 10),
+                //               height: 25,
+                //               decoration: BoxDecoration(
+                //                 color: Colors.white,
+                //                 border: Border.all(
+                //                   width: 1,
+                //                   color: CustomColors.gery,
+                //                 ),
+                //                 borderRadius: BorderRadius.all(
+                //                   Radius.circular(8),
+                //                 ),
+                //               ),
+                //               child: Padding(
+                //                 padding: const EdgeInsets.symmetric(
+                //                   horizontal: 20.0,
+                //                 ),
+                //                 child: Center(
+                //                   child: Text(
+                //                     '64',
+                //                     style: TextStyle(
+                //                       fontFamily: 'SB',
+                //                       fontSize: 12,
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
                 SliverToBoxAdapter(
                   child: Container(
                     height: 46,
@@ -416,16 +415,11 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
   }
 }
 
-class ColorVariants extends StatefulWidget {
-  final VariantsType variantsType;
+class VariantContainer extends StatelessWidget {
+  List<ProductVariant> productVariantList;
 
-  const ColorVariants(this.variantsType, {super.key});
+  VariantContainer(this.productVariantList, {super.key});
 
-  @override
-  State<ColorVariants> createState() => _ColorVariantsState();
-}
-
-class _ColorVariantsState extends State<ColorVariants> {
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -435,40 +429,14 @@ class _ColorVariantsState extends State<ColorVariants> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              widget.variantsType.title!,
+              productVariantList[0].variantsType.title!,
               style: TextStyle(fontSize: 12, fontFamily: 'SM'),
             ),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  margin: EdgeInsets.only(left: 10),
-                  height: 26,
-                  width: 26,
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10),
-                  height: 26,
-                  width: 26,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10),
-                  height: 26,
-                  width: 26,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                ),
+                ...colorVariantOptions(productVariantList[0].variantList),
               ],
             ),
           ],
@@ -476,6 +444,28 @@ class _ColorVariantsState extends State<ColorVariants> {
       ),
     );
   }
+}
+
+List<Widget> colorVariantOptions(List<Variant> variantList) {
+  List<Widget> colorWidget = [];
+
+  for (var variantColor in variantList) {
+    String categoryColor = 'FFF${variantColor.value}';
+    int hexColor = int.parse(categoryColor, radix: 16);
+
+    var item = Container(
+      height: 26,
+      width: 26,
+      margin: EdgeInsets.only(left: 10),
+      decoration: BoxDecoration(
+        color: Color(hexColor),
+        borderRadius: BorderRadius.all(Radius.circular(150)),
+      ),
+    );
+    colorWidget.add(item);
+  }
+
+  return colorWidget;
 }
 
 class galleryWidget extends StatefulWidget {
