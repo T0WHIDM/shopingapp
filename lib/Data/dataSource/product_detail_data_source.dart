@@ -18,7 +18,7 @@ class ProductDetailDataSource extends IProductDetailDataSource {
 
   @override
   Future<List<ProductImage>> getGallery() async {
-    Map<String, String> qParames = {'filter': 'product_id = "p4ah0vfcb3joeju"'};
+    Map<String, String> qParames = {'filter': 'product_id = "5vvww65pv6nviw6"'};
 
     try {
       var respones = await _dio.get(
@@ -58,7 +58,7 @@ class ProductDetailDataSource extends IProductDetailDataSource {
   @override
   Future<List<Variant>> getVariants() async {
     try {
-      Map<String, String> qParames = {'filter': 'product_id="p4ah0vfcb3joeju"'};
+      Map<String, String> qParames = {'filter': 'product_id="5vvww65pv6nviw6"'};
 
       var respones = await _dio.get(
         'collections/variants/records',

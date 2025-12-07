@@ -450,7 +450,7 @@ List<Widget> colorVariantOptions(List<Variant> variantList) {
   List<Widget> colorWidget = [];
 
   for (var variantColor in variantList) {
-    String categoryColor = 'FFF${variantColor.value}';
+    String categoryColor = 'FF${variantColor.value}';
     int hexColor = int.parse(categoryColor, radix: 16);
 
     var item = Container(
@@ -459,7 +459,7 @@ List<Widget> colorVariantOptions(List<Variant> variantList) {
       margin: EdgeInsets.only(left: 10),
       decoration: BoxDecoration(
         color: Color(hexColor),
-        borderRadius: BorderRadius.all(Radius.circular(150)),
+        borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
     );
     colorWidget.add(item);
