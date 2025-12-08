@@ -8,7 +8,7 @@ import 'package:flutter_shop_sample/utility/api_exeption.dart';
 
 abstract class IProductDetailDataSource {
   Future<List<ProductImage>> getGallery();
-  Future<List<VariantsType>> getVariantsType();
+  Future<List<VariantType>> getVariantsType();
   Future<List<Variant>> getVariants();
   Future<List<ProductVariant>> getProductVariants();
 }
@@ -18,7 +18,7 @@ class ProductDetailDataSource extends IProductDetailDataSource {
 
   @override
   Future<List<ProductImage>> getGallery() async {
-    Map<String, String> qParames = {'filter': 'product_id = "at0y1gm0t65j62j"'};
+    Map<String, String> qParames = {'filter': 'product_id = "5vvww65pv6nviw6"'};
 
     try {
       var respones = await _dio.get(
@@ -39,17 +39,15 @@ class ProductDetailDataSource extends IProductDetailDataSource {
   }
 
   @override
-  Future<List<VariantsType>> getVariantsType() async {
+  Future<List<VariantType>> getVariantsType() async {
     try {
-      var respones = await _dio.get('collections/variants_type/records');
+      var response = await _dio.get('collections/variants_type/records');
 
-      return respones.data['items']
-          .map<VariantsType>(
-            (jsonObject) => VariantsType.fromMapJson(jsonObject),
-          )
+      print(response.data);
+
+      return response.data['items']
+          .map<VariantType>((jsonObject) => VariantType.fromjson(jsonObject))
           .toList();
-    } on DioException catch (ex) {
-      throw ApiExeption(ex.response?.statusCode, ex.response?.data['message']);
     } catch (ex) {
       throw ApiExeption(0, 'unkown error');
     }
@@ -58,14 +56,16 @@ class ProductDetailDataSource extends IProductDetailDataSource {
   @override
   Future<List<Variant>> getVariants() async {
     try {
-      Map<String, String> qParames = {'filter': 'product_id = "at0y1gm0t65j62j"'};
+      Map<String, String> qParames = {
+        'filter': 'product_id = "5vvww65pv6nviw6"',
+      };
 
       var respones = await _dio.get(
         'collections/variants/records',
         queryParameters: qParames,
       );
 
-      print(respones.data);
+      print(respones.data['items']);
 
       return respones.data['items']
           .map<Variant>((jsonObject) => Variant.fromMapJson(jsonObject))
@@ -89,6 +89,7 @@ class ProductDetailDataSource extends IProductDetailDataSource {
         var variant = variantList
             .where((element) => element.typeId == variantType.id)
             .toList();
+
         productVariantList.add(ProductVariant(variant, variantType));
       }
 

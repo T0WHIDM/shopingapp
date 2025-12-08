@@ -1,13 +1,13 @@
-class VariantsType {
+class VariantType {
   String? id;
   String? name;
   String? title;
   VariantTypeEnum? type;
 
-  VariantsType(this.id, this.name, this.title, this.type);
+  VariantType(this.id, this.name, this.title, this.type);
 
-  factory VariantsType.fromMapJson(Map<String, dynamic> jsonObject) {
-    return VariantsType(
+  factory VariantType.fromjson(Map<String, dynamic> jsonObject) {
+    return VariantType(
       jsonObject['id'],
       jsonObject['name'],
       jsonObject['title'],
@@ -17,19 +17,17 @@ class VariantsType {
 }
 
 VariantTypeEnum _getTypeEnum(String type) {
-  switch (type) {
-    case 'color':
-      return VariantTypeEnum.color;
-
-    case 'storage':
-      return VariantTypeEnum.storage;
-
-    case 'voltage':
-      return VariantTypeEnum.voltage;
-
+  switch (type.toUpperCase()) {
+    case 'COLOR':
+      return VariantTypeEnum.COLOR;
+    case 'STORAGE':
+      return VariantTypeEnum.STORAGE;
+    case 'VOLTAGE':
+      return VariantTypeEnum.VOLTAGE;
     default:
-      return VariantTypeEnum.color;
+      return VariantTypeEnum.COLOR;
   }
 }
 
-enum VariantTypeEnum { color, storage, voltage }
+
+enum VariantTypeEnum { COLOR, STORAGE, VOLTAGE }

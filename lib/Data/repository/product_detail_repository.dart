@@ -8,7 +8,7 @@ import 'package:flutter_shop_sample/utility/api_exeption.dart';
 
 abstract class IproductDetailRepository {
   Future<Either<String, List<ProductImage>>> getProductimage();
-  Future<Either<String, List<VariantsType>>> getVariantsType();
+  Future<Either<String, List<VariantType>>> getVariantsType();
   Future<Either<String, List<ProductVariant>>> getProdutVariants();
 }
 
@@ -26,7 +26,7 @@ class ProductDetailRepository extends IproductDetailRepository {
   }
 
   @override
-  Future<Either<String, List<VariantsType>>> getVariantsType() async {
+  Future<Either<String, List<VariantType>>> getVariantsType() async {
     try {
       var response = await _dataSource.getVariantsType();
       return right(response);

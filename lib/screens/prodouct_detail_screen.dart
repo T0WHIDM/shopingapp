@@ -317,7 +317,7 @@ class VariantContainerGenerator extends StatelessWidget {
       child: Column(
         children: [
           for (var productVariant in productVariantList) ...{
-            if (productVariant.variantList.isNotEmpty) ...{
+            if (productVariant.variants.isNotEmpty) ...{
               VariantGeneratorChild(productVariant),
             },
           },
@@ -340,15 +340,15 @@ class VariantGeneratorChild extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            productVariant.variantsType.title!,
+            productVariant.variantType.title!,
             style: TextStyle(fontSize: 12, fontFamily: 'SM'),
           ),
           SizedBox(height: 10),
-          if (productVariant.variantsType == VariantTypeEnum.color) ...{
-            ColorVariantList(productVariant.variantList),
+          if (productVariant.variantType.type == VariantTypeEnum.COLOR) ...{
+            ColorVariantList(productVariant.variants),
           },
-          if (productVariant.variantsType == VariantTypeEnum.storage) ...{
-            ColorVariantList(productVariant.variantList),
+          if (productVariant.variantType.type == VariantTypeEnum.STORAGE) ...{
+            StorageVariantList(productVariant.variants),
           },
         ],
       ),
@@ -637,7 +637,7 @@ class _ColorVariantListState extends State<ColorVariantList> {
         margin: EdgeInsets.only(left: 10),
         decoration: BoxDecoration(
           color: Color(hexColor),
-          borderRadius: BorderRadius.all(Radius.circular(15)),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
       );
       colorWidget.add(item);
