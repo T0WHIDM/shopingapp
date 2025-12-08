@@ -18,7 +18,7 @@ class ProductDetailDataSource extends IProductDetailDataSource {
 
   @override
   Future<List<ProductImage>> getGallery() async {
-    Map<String, String> qParames = {'filter': 'product_id = "p4ah0vfcb3joeju"'};
+    Map<String, String> qParames = {'filter': 'product_id = "at0y1gm0t65j62j"'};
 
     try {
       var respones = await _dio.get(
@@ -58,12 +58,14 @@ class ProductDetailDataSource extends IProductDetailDataSource {
   @override
   Future<List<Variant>> getVariants() async {
     try {
-      Map<String, String> qParames = {'filter': 'product_id="p4ah0vfcb3joeju"'};
+      Map<String, String> qParames = {'filter': 'product_id = "at0y1gm0t65j62j"'};
 
       var respones = await _dio.get(
         'collections/variants/records',
         queryParameters: qParames,
       );
+
+      print(respones.data);
 
       return respones.data['items']
           .map<Variant>((jsonObject) => Variant.fromMapJson(jsonObject))
@@ -83,11 +85,11 @@ class ProductDetailDataSource extends IProductDetailDataSource {
     List<ProductVariant> productVariantList = [];
 
     try {
-      for (var variantsType in variantTypeList) {
+      for (var variantType in variantTypeList) {
         var variant = variantList
-            .where((element) => element.typeId == variantsType.id)
+            .where((element) => element.typeId == variantType.id)
             .toList();
-        productVariantList.add(ProductVariant(variant, variantsType));
+        productVariantList.add(ProductVariant(variant, variantType));
       }
 
       return productVariantList;

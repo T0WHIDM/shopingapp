@@ -115,119 +115,10 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                       return SliverToBoxAdapter(child: Text(l));
                     },
                     (productVariantList) {
-                      return VariantContainer(productVariantList);
+                      return VariantContainerGenerator(productVariantList);
                     },
                   ),
                 ],
-
-                // SliverToBoxAdapter(
-                //   child: Padding(
-                //     padding: const EdgeInsets.only(
-                //       top: 20.0,
-                //       right: 44,
-                //       left: 44,
-                //     ),
-                //     child: Column(
-                //       crossAxisAlignment: CrossAxisAlignment.end,
-                //       children: [
-                //         Text(
-                //           'انتخاب حافظه داخلی',
-                //           style: TextStyle(fontSize: 12, fontFamily: 'SM'),
-                //         ),
-                //         SizedBox(height: 10),
-                //         Row(
-                //           mainAxisAlignment: MainAxisAlignment.end,
-                //           children: [
-                //             Container(
-                //               margin: EdgeInsets.only(left: 10),
-                //               height: 25,
-                //               decoration: BoxDecoration(
-                //                 color: Colors.white,
-                //                 border: Border.all(
-                //                   width: 1,
-                //                   color: CustomColors.gery,
-                //                 ),
-                //                 borderRadius: BorderRadius.all(
-                //                   Radius.circular(8),
-                //                 ),
-                //               ),
-                //               child: Padding(
-                //                 padding: const EdgeInsets.symmetric(
-                //                   horizontal: 20.0,
-                //                 ),
-                //                 child: Center(
-                //                   child: Text(
-                //                     '256',
-                //                     style: TextStyle(
-                //                       fontFamily: 'SB',
-                //                       fontSize: 12,
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ),
-                //             ),
-                //             Container(
-                //               margin: EdgeInsets.only(left: 10),
-                //               height: 25,
-                //               decoration: BoxDecoration(
-                //                 color: Colors.white,
-                //                 border: Border.all(
-                //                   width: 1,
-                //                   color: CustomColors.gery,
-                //                 ),
-                //                 borderRadius: BorderRadius.all(
-                //                   Radius.circular(8),
-                //                 ),
-                //               ),
-                //               child: Padding(
-                //                 padding: const EdgeInsets.symmetric(
-                //                   horizontal: 20.0,
-                //                 ),
-                //                 child: Center(
-                //                   child: Text(
-                //                     '128',
-                //                     style: TextStyle(
-                //                       fontFamily: 'SB',
-                //                       fontSize: 12,
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ),
-                //             ),
-                //             Container(
-                //               margin: EdgeInsets.only(left: 10),
-                //               height: 25,
-                //               decoration: BoxDecoration(
-                //                 color: Colors.white,
-                //                 border: Border.all(
-                //                   width: 1,
-                //                   color: CustomColors.gery,
-                //                 ),
-                //                 borderRadius: BorderRadius.all(
-                //                   Radius.circular(8),
-                //                 ),
-                //               ),
-                //               child: Padding(
-                //                 padding: const EdgeInsets.symmetric(
-                //                   horizontal: 20.0,
-                //                 ),
-                //                 child: Center(
-                //                   child: Text(
-                //                     '64',
-                //                     style: TextStyle(
-                //                       fontFamily: 'SB',
-                //                       fontSize: 12,
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
                 SliverToBoxAdapter(
                   child: Container(
                     height: 46,
@@ -415,57 +306,54 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
   }
 }
 
-class VariantContainer extends StatelessWidget {
-  List<ProductVariant> productVariantList;
+class VariantContainerGenerator extends StatelessWidget {
+  final List<ProductVariant> productVariantList;
 
-  VariantContainer(this.productVariantList, {super.key});
+  const VariantContainerGenerator(this.productVariantList, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20.0, right: 44, left: 44),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              productVariantList[0].variantsType.title!,
-              style: TextStyle(fontSize: 12, fontFamily: 'SM'),
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ...colorVariantOptions(productVariantList[0].variantList),
-              ],
-            ),
-          ],
-        ),
+      child: Column(
+        children: [
+          for (var productVariant in productVariantList) ...{
+            if (productVariant.variantList.isNotEmpty) ...{
+              VariantGeneratorChild(productVariant),
+            },
+          },
+        ],
       ),
     );
   }
 }
 
-List<Widget> colorVariantOptions(List<Variant> variantList) {
-  List<Widget> colorWidget = [];
+class VariantGeneratorChild extends StatelessWidget {
+  final ProductVariant productVariant;
 
-  for (var variantColor in variantList) {
-    String categoryColor = 'FF${variantColor.value}';
-    int hexColor = int.parse(categoryColor, radix: 16);
+  const VariantGeneratorChild(this.productVariant, {super.key});
 
-    var item = Container(
-      height: 26,
-      width: 26,
-      margin: EdgeInsets.only(left: 10),
-      decoration: BoxDecoration(
-        color: Color(hexColor),
-        borderRadius: BorderRadius.all(Radius.circular(15)),
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0, right: 44, left: 44),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(
+            productVariant.variantsType.title!,
+            style: TextStyle(fontSize: 12, fontFamily: 'SM'),
+          ),
+          SizedBox(height: 10),
+          if (productVariant.variantsType == VariantTypeEnum.color) ...{
+            ColorVariantList(productVariant.variantList),
+          },
+          if (productVariant.variantsType == VariantTypeEnum.storage) ...{
+            ColorVariantList(productVariant.variantList),
+          },
+        ],
       ),
     );
-    colorWidget.add(item);
   }
-
-  return colorWidget;
 }
 
 class galleryWidget extends StatefulWidget {
@@ -721,6 +609,112 @@ class PriceWidget extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class ColorVariantList extends StatefulWidget {
+  List<Variant> variantList;
+
+  ColorVariantList(this.variantList, {super.key});
+
+  @override
+  State<ColorVariantList> createState() => _ColorVariantListState();
+}
+
+class _ColorVariantListState extends State<ColorVariantList> {
+  List<Widget> colorWidget = [];
+
+  @override
+  void initState() {
+    for (var variantColor in widget.variantList) {
+      String categoryColor = 'FF${variantColor.value}';
+      int hexColor = int.parse(categoryColor, radix: 16);
+
+      var item = Container(
+        height: 26,
+        width: 26,
+        margin: EdgeInsets.only(left: 10),
+        decoration: BoxDecoration(
+          color: Color(hexColor),
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+        ),
+      );
+      colorWidget.add(item);
+    }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: SizedBox(
+        height: 26,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: colorWidget.length,
+          itemBuilder: (context, index) {
+            return colorWidget[index];
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class StorageVariantList extends StatefulWidget {
+  List<Variant> storageVariant;
+
+  StorageVariantList(this.storageVariant, {super.key});
+
+  @override
+  State<StorageVariantList> createState() => _StorageVariantListState();
+}
+
+class _StorageVariantListState extends State<StorageVariantList> {
+  List<Widget> storageWidgettList = [];
+
+  @override
+  void initState() {
+    for (var storageVariant in widget.storageVariant) {
+      var item = Container(
+        margin: EdgeInsets.only(left: 10),
+        height: 25,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(width: 1, color: CustomColors.gery),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Center(
+            child: Text(
+              storageVariant.value!,
+              style: TextStyle(fontFamily: 'SB', fontSize: 12),
+            ),
+          ),
+        ),
+      );
+      storageWidgettList.add(item);
+    }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: SizedBox(
+        height: 26,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: storageWidgettList.length,
+          itemBuilder: (context, index) {
+            return storageWidgettList[index];
+          },
+        ),
+      ),
     );
   }
 }
