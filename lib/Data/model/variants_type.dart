@@ -2,7 +2,7 @@ class VariantsType {
   String? id;
   String? name;
   String? title;
-  VariantTypeEnum type;
+  VariantTypeEnum? type;
 
   VariantsType(this.id, this.name, this.title, this.type);
 
