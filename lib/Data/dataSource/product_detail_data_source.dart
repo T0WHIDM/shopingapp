@@ -7,7 +7,7 @@ import 'package:flutter_shop_sample/di/di.dart';
 import 'package:flutter_shop_sample/utility/api_exeption.dart';
 
 abstract class IProductDetailDataSource {
-  Future<List<ProductImage>> getGallery();
+  Future<List<ProductImage>> getGallery(String product);
   Future<List<VariantType>> getVariantsType();
   Future<List<Variant>> getVariants();
   Future<List<ProductVariant>> getProductVariants();
@@ -17,8 +17,8 @@ class ProductDetailDataSource extends IProductDetailDataSource {
   final Dio _dio = locator.get();
 
   @override
-  Future<List<ProductImage>> getGallery() async {
-    Map<String, String> qParames = {'filter': 'product_id = "5vvww65pv6nviw6"'};
+  Future<List<ProductImage>> getGallery(String product) async {
+    Map<String, String> qParames = {'filter': 'product_id = "$product"'};
 
     try {
       var respones = await _dio.get(
@@ -65,7 +65,6 @@ class ProductDetailDataSource extends IProductDetailDataSource {
         queryParameters: qParames,
       );
 
-    
       return respones.data['items']
           .map<Variant>((jsonObject) => Variant.fromMapJson(jsonObject))
           .toList();

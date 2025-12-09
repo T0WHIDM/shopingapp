@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_shop_sample/Data/model/product.dart';
 import 'package:flutter_shop_sample/Data/model/product_image.dart';
 import 'package:flutter_shop_sample/Data/model/product_variant.dart';
 import 'package:flutter_shop_sample/Data/model/variant.dart';
@@ -14,7 +15,9 @@ import 'package:flutter_shop_sample/custom_widget,dart/cached_image.dart';
 import 'package:flutter_shop_sample/di/di.dart';
 
 class ProdouctDetailScreen extends StatefulWidget {
-  const ProdouctDetailScreen({super.key});
+  Product product;
+
+  ProdouctDetailScreen(this.product, {super.key});
 
   @override
   State<ProdouctDetailScreen> createState() => _ProdouctDetailScreenState();
@@ -23,7 +26,9 @@ class ProdouctDetailScreen extends StatefulWidget {
 class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
   @override
   void initState() {
-    BlocProvider.of<ProductBloc>(context).add(ProductInitializeEvent());
+    BlocProvider.of<ProductBloc>(
+      context,
+    ).add(ProductInitializeEvent(widget.product.id));
     super.initState();
   }
 
@@ -104,7 +109,7 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                       return SliverToBoxAdapter(child: Text(l));
                     },
                     (r) {
-                      return galleryWidget(r);
+                      return galleryWidget(r, widget.product.thumbnail);
                     },
                   ),
                 ],
@@ -358,9 +363,14 @@ class VariantGeneratorChild extends StatelessWidget {
 
 class galleryWidget extends StatefulWidget {
   List<ProductImage> productImagesList;
+  String defualtProductThumbnail;
   int selectedItem = 0;
 
-  galleryWidget(this.productImagesList, {super.key});
+  galleryWidget(
+    this.productImagesList,
+    this.defualtProductThumbnail, {
+    super.key,
+  });
 
   @override
   State<galleryWidget> createState() => _GalleryWidgetState();
@@ -402,11 +412,14 @@ class _GalleryWidgetState extends State<galleryWidget> {
                       ),
                       Spacer(),
                       SizedBox(
-                        height: double.infinity,
+                        height: 200,
+                        width: 200,
                         child: CachedImage(
-                          imageUrl: widget
-                              .productImagesList[widget.selectedItem]
-                              .imageUrl,
+                          imageUrl: (widget.productImagesList.isEmpty)
+                              ? widget.defualtProductThumbnail
+                              : widget
+                                    .productImagesList[widget.selectedItem]
+                                    .imageUrl,
                         ),
                       ),
                       Spacer(),
@@ -415,42 +428,51 @@ class _GalleryWidgetState extends State<galleryWidget> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 70,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 80.0, right: 60, top: 5),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: widget.productImagesList.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            widget.selectedItem = index;
-                          });
-                        },
-                        child: Container(
-                          width: 70,
-                          height: 70,
-                          padding: EdgeInsets.all(5),
-                          margin: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: CustomColors.gery,
-                              width: 1,
+              if (widget.productImagesList.isNotEmpty) ...{
+                SizedBox(
+                  height: 70,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 80.0,
+                      right: 60,
+                      top: 5,
+                    ),
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: widget.productImagesList.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              widget.selectedItem = index;
+                            });
+                          },
+                          child: Container(
+                            width: 70,
+                            height: 70,
+                            padding: EdgeInsets.all(5),
+                            margin: EdgeInsets.only(left: 10),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: CustomColors.gery,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            child: CachedImage(
+                              imageUrl:
+                                  widget.productImagesList[index].imageUrl,
+                              radius: 10,
+                            ),
                           ),
-                          child: CachedImage(
-                            imageUrl: widget.productImagesList[index].imageUrl,
-                            radius: 10,
-                          ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
+              },
               SizedBox(height: 20),
             ],
           ),
@@ -479,32 +501,20 @@ class AddToBasketWidget extends StatelessWidget {
           ),
         ),
         Positioned(
-          child: GestureDetector(
-            onTap: () async {
-              IproductDetailRepository repository = locator.get();
-              var response = await repository.getProductimage();
-
-              response.fold((l) {}, (r) {
-                r.forEach((element) {
-                  print(element.imageUrl);
-                });
-              });
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: SizedBox(
-                  height: 53,
-                  width: 160,
-                  child: Center(
-                    child: Text(
-                      'افزودن به سبد خرید',
-                      style: TextStyle(
-                        fontFamily: 'SB',
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: SizedBox(
+                height: 53,
+                width: 160,
+                child: Center(
+                  child: Text(
+                    'افزودن به سبد خرید',
+                    style: TextStyle(
+                      fontFamily: 'SB',
+                      fontSize: 16,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -660,7 +670,7 @@ class _ColorVariantListState extends State<ColorVariantList> {
                   borderRadius: BorderRadius.all(Radius.circular(8)),
                 ),
                 child: Container(
-                    decoration: BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Color(hexColor),
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                   ),
