@@ -65,8 +65,7 @@ class ProductDetailDataSource extends IProductDetailDataSource {
         queryParameters: qParames,
       );
 
-      print(respones.data['items']);
-
+    
       return respones.data['items']
           .map<Variant>((jsonObject) => Variant.fromMapJson(jsonObject))
           .toList();

@@ -5,9 +5,9 @@ import 'package:flutter_shop_sample/custom_widget,dart/cached_image.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class BannerSlider extends StatelessWidget {
-  List<MyBanner> bannerList;
+  final List<MyBanner> bannerList;
 
-  BannerSlider({super.key, required this.bannerList});
+  const BannerSlider({super.key, required this.bannerList});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,8 @@ class BannerSlider extends StatelessWidget {
             itemBuilder: (context, index) {
               return Container(
                 margin: EdgeInsets.symmetric(horizontal: 6),
-                child: CachedImage(imageUrl: bannerList[index].thumbnail!));
+                child: CachedImage(imageUrl: bannerList[index].thumbnail!),
+              );
             },
           ),
         ),
