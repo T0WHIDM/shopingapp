@@ -93,7 +93,7 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: Text(
                       textAlign: TextAlign.center,
-                      'se 2022 آیفون',
+                      widget.product.name,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'SB',
