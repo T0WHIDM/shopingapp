@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter_shop_sample/Data/model/category.dart';
 import 'package:flutter_shop_sample/Data/model/product_image.dart';
 import 'package:flutter_shop_sample/Data/model/product_variant.dart';
 
@@ -11,6 +12,11 @@ class ProductLoadingState extends ProductState {}
 class ProductResponseState extends ProductState {
   Either<String, List<ProductImage>> productImages;
   Either<String, List<ProductVariant>> productVariant;
+  Either<String, Category> productCategory;
 
-  ProductResponseState(this.productImages, this.productVariant);
+  ProductResponseState(
+    this.productImages,
+    this.productVariant,
+    this.productCategory,
+  );
 }

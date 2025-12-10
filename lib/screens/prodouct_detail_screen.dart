@@ -6,13 +6,11 @@ import 'package:flutter_shop_sample/Data/model/product_image.dart';
 import 'package:flutter_shop_sample/Data/model/product_variant.dart';
 import 'package:flutter_shop_sample/Data/model/variant.dart';
 import 'package:flutter_shop_sample/Data/model/variants_type.dart';
-import 'package:flutter_shop_sample/Data/repository/product_detail_repository.dart';
 import 'package:flutter_shop_sample/bloc/product/product_bloc.dart';
 import 'package:flutter_shop_sample/bloc/product/product_event.dart';
 import 'package:flutter_shop_sample/bloc/product/product_state.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/cached_image.dart';
-import 'package:flutter_shop_sample/di/di.dart';
 
 class ProdouctDetailScreen extends StatefulWidget {
   Product product;
@@ -28,7 +26,7 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
   void initState() {
     BlocProvider.of<ProductBloc>(
       context,
-    ).add(ProductInitializeEvent(widget.product.id));
+    ).add(ProductInitializeEvent(widget.product.id, widget.product.categoryId));
     super.initState();
   }
 
@@ -53,41 +51,58 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                   ),
                 ],
 
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 44,
-                      right: 44,
-                      bottom: 32,
-                    ),
-                    child: Container(
-                      height: 46,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                if (state is ProductResponseState) ...{
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 44,
+                        right: 44,
+                        bottom: 32,
                       ),
-                      child: Row(
-                        children: [
-                          SizedBox(width: 10),
-                          Image.asset('assets/images/icon_apple_blue.png'),
-                          Expanded(
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              'ایفون',
-                              style: TextStyle(
-                                color: CustomColors.blue,
-                                fontSize: 16,
-                                fontFamily: 'SM',
+                      child: Container(
+                        height: 46,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                        ),
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 16),
+                            Image.asset('assets/images/icon_apple_blue.png'),
+                            Expanded(
+                              child: state.productCategory.fold(
+                                (l) {
+                                  return const Text(
+                                    'اطلاعات محصول',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: 'sb',
+                                      fontSize: 16,
+                                      color: CustomColors.blue,
+                                    ),
+                                  );
+                                },
+                                (productCategory) {
+                                  return Text(
+                                    productCategory.title!,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontFamily: 'sb',
+                                      fontSize: 16,
+                                      color: CustomColors.blue,
+                                    ),
+                                  );
+                                },
                               ),
                             ),
-                          ),
-                          Image.asset('assets/images/icon_back.png'),
-                          SizedBox(width: 16),
-                        ],
+                            Image.asset('assets/images/icon_back.png'),
+                            const SizedBox(width: 16),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
+                },
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),
@@ -412,8 +427,8 @@ class _GalleryWidgetState extends State<galleryWidget> {
                       ),
                       Spacer(),
                       SizedBox(
-                        height: 200,
-                        width: 200,
+                        height: 150,
+                        width: 150,
                         child: CachedImage(
                           imageUrl: (widget.productImagesList.isEmpty)
                               ? widget.defualtProductThumbnail

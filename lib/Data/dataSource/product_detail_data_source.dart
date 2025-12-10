@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_shop_sample/Data/model/category.dart';
 import 'package:flutter_shop_sample/Data/model/product_image.dart';
 import 'package:flutter_shop_sample/Data/model/product_variant.dart';
 import 'package:flutter_shop_sample/Data/model/variant.dart';
@@ -11,6 +12,7 @@ abstract class IProductDetailDataSource {
   Future<List<VariantType>> getVariantsType();
   Future<List<Variant>> getVariants();
   Future<List<ProductVariant>> getProductVariants();
+  Future<Category> getProductCategory(String categoryId);
 }
 
 class ProductDetailDataSource extends IProductDetailDataSource {
@@ -42,8 +44,6 @@ class ProductDetailDataSource extends IProductDetailDataSource {
   Future<List<VariantType>> getVariantsType() async {
     try {
       var response = await _dio.get('collections/variants_type/records');
-
-      print(response.data);
 
       return response.data['items']
           .map<VariantType>((jsonObject) => VariantType.fromjson(jsonObject))
@@ -96,6 +96,22 @@ class ProductDetailDataSource extends IProductDetailDataSource {
       throw ApiExeption(ex.response?.statusCode, ex.response?.data['message']);
     } catch (ex) {
       throw ApiExeption(0, 'unknown erorr');
+    }
+  }
+
+  @override
+  Future<Category> getProductCategory(String categoryId) async {
+    try {
+      Map<String, String> qParames = {'filter': 'product_id = "$categoryId"'};
+      var response = await _dio.get(
+        'collections/category/records',
+        queryParameters: qParames,
+      );
+      return Category.fromMapJson(response.data['items'][0]);
+    } on DioException catch (ex) {
+      throw ApiExeption(ex.response?.statusCode, ex.response?.data['message']);
+    } catch (ex) {
+      throw ApiExeption(0, 'unkown error');
     }
   }
 }

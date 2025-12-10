@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_shop_sample/Data/dataSource/product_detail_data_source.dart';
+import 'package:flutter_shop_sample/Data/model/category.dart';
 import 'package:flutter_shop_sample/Data/model/product_image.dart';
 import 'package:flutter_shop_sample/Data/model/product_variant.dart';
 import 'package:flutter_shop_sample/Data/model/variants_type.dart';
@@ -10,13 +11,16 @@ abstract class IproductDetailRepository {
   Future<Either<String, List<ProductImage>>> getProductimage(String product);
   Future<Either<String, List<VariantType>>> getVariantsType();
   Future<Either<String, List<ProductVariant>>> getProdutVariants();
+  Future<Either<String, Category>> getProductCategory(String categoryId);
 }
 
 class ProductDetailRepository extends IproductDetailRepository {
   final IProductDetailDataSource _dataSource = locator.get();
 
   @override
-  Future<Either<String, List<ProductImage>>> getProductimage(String product) async {
+  Future<Either<String, List<ProductImage>>> getProductimage(
+    String product,
+  ) async {
     try {
       var response = await _dataSource.getGallery(product);
       return right(response);
@@ -39,6 +43,16 @@ class ProductDetailRepository extends IproductDetailRepository {
   Future<Either<String, List<ProductVariant>>> getProdutVariants() async {
     try {
       var response = await _dataSource.getProductVariants();
+      return right(response);
+    } on ApiExeption catch (e) {
+      return left(e.message ?? 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, Category>> getProductCategory(String categoryId) async {
+    try {
+      var response = await _dataSource.getProductCategory(categoryId);
       return right(response);
     } on ApiExeption catch (e) {
       return left(e.message ?? 'خطا محتوای متنی ندارد');
