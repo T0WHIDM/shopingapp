@@ -10,7 +10,9 @@ import 'package:flutter_shop_sample/utility/api_exeption.dart';
 abstract class IproductDetailRepository {
   Future<Either<String, List<ProductImage>>> getProductimage(String product);
   Future<Either<String, List<VariantType>>> getVariantsType();
-  Future<Either<String, List<ProductVariant>>> getProdutVariants();
+  Future<Either<String, List<ProductVariant>>> getProdutVariants(
+    String productId,
+  );
   Future<Either<String, Category>> getProductCategory(String categoryId);
 }
 
@@ -40,9 +42,11 @@ class ProductDetailRepository extends IproductDetailRepository {
   }
 
   @override
-  Future<Either<String, List<ProductVariant>>> getProdutVariants() async {
+  Future<Either<String, List<ProductVariant>>> getProdutVariants(
+    String productId,
+  ) async {
     try {
-      var response = await _dataSource.getProductVariants();
+      var response = await _dataSource.getProductVariants(productId);
       return right(response);
     } on ApiExeption catch (e) {
       return left(e.message ?? 'خطا محتوای متنی ندارد');

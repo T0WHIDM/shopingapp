@@ -10,8 +10,8 @@ import 'package:flutter_shop_sample/utility/api_exeption.dart';
 abstract class IProductDetailDataSource {
   Future<List<ProductImage>> getGallery(String product);
   Future<List<VariantType>> getVariantsType();
-  Future<List<Variant>> getVariants();
-  Future<List<ProductVariant>> getProductVariants();
+  Future<List<Variant>> getVariants(String productId);
+  Future<List<ProductVariant>> getProductVariants(String productId);
   Future<Category> getProductCategory(String categoryId);
 }
 
@@ -54,11 +54,9 @@ class ProductDetailDataSource extends IProductDetailDataSource {
   }
 
   @override
-  Future<List<Variant>> getVariants() async {
+  Future<List<Variant>> getVariants(String productId) async {
     try {
-      Map<String, String> qParames = {
-        'filter': 'product_id = "5vvww65pv6nviw6"',
-      };
+      Map<String, String> qParames = {'filter': 'product_id = "$productId"'};
 
       var respones = await _dio.get(
         'collections/variants/records',
@@ -76,9 +74,9 @@ class ProductDetailDataSource extends IProductDetailDataSource {
   }
 
   @override
-  Future<List<ProductVariant>> getProductVariants() async {
+  Future<List<ProductVariant>> getProductVariants(String productId) async {
     var variantTypeList = await getVariantsType();
-    var variantList = await getVariants();
+    var variantList = await getVariants(productId);
 
     List<ProductVariant> productVariantList = [];
 
