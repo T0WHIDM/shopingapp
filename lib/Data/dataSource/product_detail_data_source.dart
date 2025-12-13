@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_shop_sample/Data/model/category.dart';
 import 'package:flutter_shop_sample/Data/model/product_image.dart';
 import 'package:flutter_shop_sample/Data/model/product_variant.dart';
+import 'package:flutter_shop_sample/Data/model/properties.dart';
 import 'package:flutter_shop_sample/Data/model/variant.dart';
 import 'package:flutter_shop_sample/Data/model/variants_type.dart';
 import 'package:flutter_shop_sample/di/di.dart';
@@ -13,6 +14,7 @@ abstract class IProductDetailDataSource {
   Future<List<Variant>> getVariants(String productId);
   Future<List<ProductVariant>> getProductVariants(String productId);
   Future<Category> getProductCategory(String categoryId);
+  Future<List<Property>> getProductProperties(String productId);
 }
 
 class ProductDetailDataSource extends IProductDetailDataSource {
@@ -100,7 +102,7 @@ class ProductDetailDataSource extends IProductDetailDataSource {
   @override
   Future<Category> getProductCategory(String categoryId) async {
     try {
-      Map<String, String> qParames = {'filter': 'product_id = "$categoryId"'};
+      Map<String, String> qParames = {'filter': 'id = "$categoryId"'};
       var response = await _dio.get(
         'collections/category/records',
         queryParameters: qParames,
@@ -110,6 +112,26 @@ class ProductDetailDataSource extends IProductDetailDataSource {
       throw ApiExeption(ex.response?.statusCode, ex.response?.data['message']);
     } catch (ex) {
       throw ApiExeption(0, 'unkown error');
+    }
+  }
+
+  @override
+  Future<List<Property>> getProductProperties(String productId) async {
+    try {
+      Map<String, String> qParams = {'filter': 'product_id="$productId"'};
+
+      var respones = await _dio.get(
+        'collections/properties/records',
+        queryParameters: qParams,
+      );
+
+      return respones.data['items']
+          .map<Property>((jsonObject) => Property.fromJson(jsonObject))
+          .toList();
+    } on DioException catch (ex) {
+      throw ApiExeption(ex.response?.statusCode, ex.response?.data['message']);
+    } catch (ex) {
+      throw ApiExeption(0, 'unknown erorr');
     }
   }
 }

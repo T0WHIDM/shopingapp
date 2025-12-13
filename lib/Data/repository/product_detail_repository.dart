@@ -3,6 +3,7 @@ import 'package:flutter_shop_sample/Data/dataSource/product_detail_data_source.d
 import 'package:flutter_shop_sample/Data/model/category.dart';
 import 'package:flutter_shop_sample/Data/model/product_image.dart';
 import 'package:flutter_shop_sample/Data/model/product_variant.dart';
+import 'package:flutter_shop_sample/Data/model/properties.dart';
 import 'package:flutter_shop_sample/Data/model/variants_type.dart';
 import 'package:flutter_shop_sample/di/di.dart';
 import 'package:flutter_shop_sample/utility/api_exeption.dart';
@@ -14,6 +15,7 @@ abstract class IproductDetailRepository {
     String productId,
   );
   Future<Either<String, Category>> getProductCategory(String categoryId);
+  Future<Either<String, List<Property>>> getProductProperties(String productId);
 }
 
 class ProductDetailRepository extends IproductDetailRepository {
@@ -60,6 +62,18 @@ class ProductDetailRepository extends IproductDetailRepository {
       return right(response);
     } on ApiExeption catch (e) {
       return left(e.message ?? 'خطا محتوای متنی ندارد');
+    }
+  }
+
+  @override
+  Future<Either<String, List<Property>>> getProductProperties(
+    String productId,
+  ) async {
+    try {
+      var response = await _dataSource.getProductProperties(productId);
+      return right(response);
+    } on ApiExeption catch (ex) {
+      return left(ex.message ?? 'خطا محتوای متنی ندارد');
     }
   }
 }
