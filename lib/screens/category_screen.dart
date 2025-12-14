@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shop_sample/Data/model/category.dart';
-import 'package:flutter_shop_sample/Data/repository/category_repository.dart';
 import 'package:flutter_shop_sample/bloc/category/category_bloc.dart';
 import 'package:flutter_shop_sample/bloc/category/category_event.dart';
 import 'package:flutter_shop_sample/bloc/category/category_state.dart';

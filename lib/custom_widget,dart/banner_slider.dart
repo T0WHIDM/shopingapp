@@ -33,7 +33,7 @@ class BannerSlider extends StatelessWidget {
           bottom: 10,
           child: SmoothPageIndicator(
             controller: controller,
-            count: 3,
+            count: 4,
             effect: const ExpandingDotsEffect(
               dotHeight: 6,
               dotWidth: 6,
