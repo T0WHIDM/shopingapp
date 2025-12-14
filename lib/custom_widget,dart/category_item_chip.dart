@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shop_sample/Data/model/category.dart';
+import 'package:flutter_shop_sample/bloc/categoryProduct/category_product_bloc.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/cached_image.dart';
 import 'package:flutter_shop_sample/screens/prodouct_list_screen.dart';
 
@@ -18,7 +20,10 @@ class CategoryItemChip extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
-              return ProdouctListScreen(category);
+              return BlocProvider(
+                create: (context) => CategoryProductBloc(),
+                child: ProdouctListScreen(category),
+              );
             },
           ),
         );
