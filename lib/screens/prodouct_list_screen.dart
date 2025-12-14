@@ -64,6 +64,13 @@ class _ProdouctListScreenState extends State<ProdouctListScreen> {
                               ),
                             ),
                           ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Image.asset('assets/images/icon_back.png'),
+                          ),
+                          const SizedBox(width: 16),
                         ],
                       ),
                     ),

@@ -96,7 +96,12 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                                 },
                               ),
                             ),
-                            Image.asset('assets/images/icon_back.png'),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Image.asset('assets/images/icon_back.png'),
+                            ),
                             const SizedBox(width: 16),
                           ],
                         ),
