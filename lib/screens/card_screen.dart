@@ -1,6 +1,7 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
+import 'package:flutter_shop_sample/utility/extentions/string_extentions.dart';
 
 class CardScreen extends StatelessWidget {
   const CardScreen({super.key});
@@ -60,7 +61,11 @@ class CardScreen extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 44.0,right: 44.0,bottom: 20),
+              padding: const EdgeInsets.only(
+                left: 44.0,
+                right: 44.0,
+                bottom: 20,
+              ),
               child: SizedBox(
                 height: 53,
                 width: MediaQuery.of(context).size.width,
@@ -114,8 +119,16 @@ class CardItem extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text('data'),
-                        Text('data'),
+                        Text(
+                          'آیفون 13 پرومکس',
+                          style: TextStyle(fontFamily: 'SB', fontSize: 16),
+                        ),
+                        SizedBox(height: 6),
+                        Text(
+                          'گارانتی 18 ماه مدیا پردازش',
+                          style: TextStyle(fontSize: 12, fontFamily: 'SM'),
+                        ),
+                        SizedBox(height: 6),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -134,17 +147,69 @@ class CardItem extends StatelessWidget {
                                 child: Text(
                                   '%3',
                                   style: TextStyle(
+                                    color: Colors.white,
                                     fontFamily: 'SB',
                                     fontSize: 12,
                                   ),
                                 ),
                               ),
                             ),
-                            Text('تومان'),
-                            Text('1550000'),
+                            SizedBox(width: 5),
+                            Text(
+                              'تومان',
+                              style: TextStyle(fontSize: 12, fontFamily: 'SM'),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              '1550000',
+                              style: TextStyle(fontSize: 12, fontFamily: 'SM'),
+                            ),
                           ],
                         ),
-                        Wrap(children: [OptionsCheap(), OptionsCheap()]),
+                        SizedBox(height: 12),
+                        Wrap(
+                          spacing: 8,
+
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: CustomColors.red,
+                                  width: 1.5,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 2,
+                                  bottom: 2,
+                                  right: 8,
+                                  left: 8,
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'حذف',
+                                      style: TextStyle(
+                                        color: CustomColors.red,
+                                        fontFamily: 'SM',
+                                        fontSize: 12,
+                                      ),
+                                      textDirection: TextDirection.rtl,
+                                    ),
+                                    SizedBox(width: 4),
+                                    Image.asset('assets/images/icon_trash.png'),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            OptionsCheap('آبی', color: '4287a5'),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -170,7 +235,14 @@ class CardItem extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text('تومان'), Text('59000000')],
+              children: [
+                Text('تومان', style: TextStyle(fontFamily: 'SB', fontSize: 16)),
+                SizedBox(width: 4),
+                Text(
+                  '59000000',
+                  style: TextStyle(fontFamily: 'SB', fontSize: 16),
+                ),
+              ],
             ),
           ),
         ],
@@ -180,7 +252,10 @@ class CardItem extends StatelessWidget {
 }
 
 class OptionsCheap extends StatelessWidget {
-  const OptionsCheap({super.key});
+  String? color;
+  String title;
+
+  OptionsCheap(this.title, {this.color, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -190,13 +265,25 @@ class OptionsCheap extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
+        padding: const EdgeInsets.only(top: 2, bottom: 2, right: 8, left: 8),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset('assets/images/icon_options.png'),
-            Text('data'),
-            SizedBox(width: 10),
+            Container(
+              margin: EdgeInsets.only(right: 4),
+              width: 12,
+              height: 12,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: color.parseToColor(),
+              ),
+            ),
+
+            Text(
+              title,
+              style: TextStyle(fontFamily: 'SM', fontSize: 12),
+              textDirection: TextDirection.rtl,
+            ),
           ],
         ),
       ),
