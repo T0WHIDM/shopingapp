@@ -26,7 +26,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       );
 
       emit(
-        ProductResponseState(
+        ProductSuccessResponseState(
           productImages,
           productVariant,
           productCategory,

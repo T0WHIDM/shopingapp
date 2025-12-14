@@ -10,13 +10,13 @@ class ProductInitState extends ProductState {}
 
 class ProductLoadingState extends ProductState {}
 
-class ProductResponseState extends ProductState {
+class ProductSuccessResponseState extends ProductState {
   Either<String, List<ProductImage>> productImages;
   Either<String, List<ProductVariant>> productVariant;
   Either<String, Category> productCategory;
   Either<String, List<Property>> productProperties;
 
-  ProductResponseState(
+  ProductSuccessResponseState(
     this.productImages,
     this.productVariant,
     this.productCategory,

@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop_sample/Data/model/category.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
-import 'package:flutter_shop_sample/custom_widget,dart/prodouct_item.dart';
 
-class ProdouctListScreen extends StatelessWidget {
-  const ProdouctListScreen({super.key});
+class ProdouctListScreen extends StatefulWidget {
+  Category category;
 
+  ProdouctListScreen(this.category, {super.key});
+
+  @override
+  State<ProdouctListScreen> createState() => _ProdouctListScreenState();
+}
+
+class _ProdouctListScreenState extends State<ProdouctListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +35,7 @@ class ProdouctListScreen extends StatelessWidget {
                       Expanded(
                         child: Text(
                           textAlign: TextAlign.center,
-                          'پر فروش ترین ها',
+                          widget.category.title!,
                           style: TextStyle(
                             color: CustomColors.blue,
                             fontSize: 16,

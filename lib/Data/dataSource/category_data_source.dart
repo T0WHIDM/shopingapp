@@ -15,8 +15,6 @@ class CategoryDataSourceRemote extends ICategoryDataSource {
     try {
       var respones = await _dio.get('collections/category/records');
 
-    print(respones.data);
-
       return respones.data['items']
           .map<Category>((jsonObject) => Category.fromMapJson(jsonObject))
           .toList();

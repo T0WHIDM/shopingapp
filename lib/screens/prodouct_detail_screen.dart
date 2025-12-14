@@ -52,7 +52,7 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                   ),
                 ],
 
-                if (state is ProductResponseState) ...{
+                if (state is ProductSuccessResponseState) ...{
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.only(
@@ -119,7 +119,7 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                   ),
                 ),
 
-                if (state is ProductResponseState) ...[
+                if (state is ProductSuccessResponseState) ...[
                   state.productImages.fold(
                     (l) {
                       return SliverToBoxAdapter(child: Text(l));
@@ -130,7 +130,7 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                   ),
                 ],
 
-                if (state is ProductResponseState) ...[
+                if (state is ProductSuccessResponseState) ...[
                   state.productVariant.fold(
                     (l) {
                       return SliverToBoxAdapter(child: Text(l));
@@ -140,7 +140,7 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                     },
                   ),
                 ],
-                if (state is ProductResponseState) ...{
+                if (state is ProductSuccessResponseState) ...{
                   state.productProperties.fold(
                     (l) {
                       return SliverToBoxAdapter(child: Text(l));
