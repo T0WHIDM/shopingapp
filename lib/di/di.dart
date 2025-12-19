@@ -1,14 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_shop_sample/Data/dataSource/authentication_data_source.dart';
 import 'package:flutter_shop_sample/Data/dataSource/banner_data_source.dart';
-import 'package:flutter_shop_sample/Data/dataSource/basket_data_source.dart';
 import 'package:flutter_shop_sample/Data/dataSource/category_data_source.dart';
 import 'package:flutter_shop_sample/Data/dataSource/category_product_data_source.dart';
 import 'package:flutter_shop_sample/Data/dataSource/product_data_source.dart';
 import 'package:flutter_shop_sample/Data/dataSource/product_detail_data_source.dart';
 import 'package:flutter_shop_sample/Data/repository/authentication_repository.dart';
 import 'package:flutter_shop_sample/Data/repository/banner_repository.dart';
-import 'package:flutter_shop_sample/Data/repository/basket_Repository.dart';
 import 'package:flutter_shop_sample/Data/repository/category_product_repository.dart';
 import 'package:flutter_shop_sample/Data/repository/category_repository.dart';
 import 'package:flutter_shop_sample/Data/repository/product_detail_repository.dart';
@@ -38,7 +36,6 @@ Future<void> getItInit() async {
   locator.registerFactory<ICategoryProductDataSource>(
     () => CategoryProductDataSourceRemote(),
   );
-  locator.registerFactory<IBasketDataSource>(() => BasketLocalDataSource());
 
   //repositories
   locator.registerFactory<IAuthenticationRepository>(
@@ -53,7 +50,6 @@ Future<void> getItInit() async {
   locator.registerFactory<ICategoryProductRepository>(
     () => CategoryProductRepository(),
   );
-  locator.registerFactory<IBasketRepository>(() => BasketRepository());
 
   //component
   locator.registerSingleton<SharedPreferences>(

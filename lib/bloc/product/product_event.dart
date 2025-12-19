@@ -9,8 +9,3 @@ class ProductInitializeEvent extends ProductEvent {
   ProductInitializeEvent(this.productId, this.categoryId);
 }
 
-class ProductAddToBasket extends ProductEvent {
-  Product product;
-
-  ProductAddToBasket(this.product);
-}

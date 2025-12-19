@@ -14,10 +14,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await getItInit();
+  
   await Hive.initFlutter();
   Hive.registerAdapter(BasketItemAdapter());
   await Hive.openBox<BasketItem>('basketBox');
+
+  await getItInit();
 
   runApp(const MyApp());
 }
