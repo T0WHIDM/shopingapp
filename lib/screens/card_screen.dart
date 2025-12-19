@@ -1,13 +1,19 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_shop_sample/Data/model/basket_item.dart'
+    show BasketItem;
 import 'package:flutter_shop_sample/constants/colors.dart';
+import 'package:flutter_shop_sample/custom_widget,dart/cached_image.dart';
 import 'package:flutter_shop_sample/utility/extentions/string_extentions.dart';
+import 'package:hive_flutter/adapters.dart';
 
 class CardScreen extends StatelessWidget {
   const CardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box<BasketItem>('basketBox');
+
     return Scaffold(
       backgroundColor: CustomColors.backgroundScreenColor,
       body: SafeArea(
@@ -50,12 +56,12 @@ class CardScreen extends StatelessWidget {
                   ),
                 ),
                 SliverList(
-                  delegate: SliverChildBuilderDelegate(childCount: 10, (
-                    context,
-                    index,
-                  ) {
-                    return CardItem();
-                  }),
+                  delegate: SliverChildBuilderDelegate(
+                    childCount: box.values.length,
+                    (context, index) {
+                      return CardItem(box.values.toList()[index]);
+                    },
+                  ),
                 ),
                 SliverPadding(padding: EdgeInsets.only(bottom: 100)),
               ],
@@ -93,7 +99,9 @@ class CardScreen extends StatelessWidget {
 }
 
 class CardItem extends StatelessWidget {
-  const CardItem({super.key});
+  BasketItem basketItem;
+
+  CardItem(this.basketItem, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +128,7 @@ class CardItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          'آیفون 13 پرومکس',
+                          basketItem.name,
                           style: TextStyle(fontFamily: 'SB', fontSize: 16),
                         ),
                         SizedBox(height: 6),
@@ -216,7 +224,14 @@ class CardItem extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 10.0),
-                  child: Image.asset('assets/images/iphone.png'),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10.0),
+                    child: SizedBox(
+                      height: 104,
+                      width: 75,
+                      child: CachedImage(imageUrl: basketItem.thumbnail),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -226,6 +241,7 @@ class CardItem extends StatelessWidget {
             child: DottedLine(
               lineThickness: 3,
               dashLength: 8,
+              // ignore: deprecated_member_use
               dashColor: CustomColors.gery.withOpacity(0.5),
               dashGapLength: 3,
               dashGapColor: Colors.transparent,
@@ -252,16 +268,16 @@ class CardItem extends StatelessWidget {
 }
 
 class OptionsCheap extends StatelessWidget {
-  String? color;
-  String title;
+  final String? color;
+  final String title;
 
-  OptionsCheap(this.title, {this.color, super.key});
+  const OptionsCheap(this.title, {this.color, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: CustomColors.gery, width: 1),
+        border: Border.all(color: CustomColors.gery, width: 2),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Padding(

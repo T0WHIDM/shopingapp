@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_shop_sample/Data/model/basket_item.dart';
 import 'package:flutter_shop_sample/Data/model/product.dart';
 import 'package:flutter_shop_sample/Data/model/product_image.dart';
 import 'package:flutter_shop_sample/Data/model/product_variant.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_shop_sample/bloc/product/product_event.dart';
 import 'package:flutter_shop_sample/bloc/product/product_state.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/cached_image.dart';
+import 'package:hive/hive.dart';
 
 class ProdouctDetailScreen extends StatefulWidget {
   Product product;
@@ -267,7 +269,10 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [PriceWidget(), AddToBasketWidget()],
+                      children: [
+                        PriceWidget(),
+                        AddToBasketWidget(widget.product),
+                      ],
                     ),
                   ),
                 ),
@@ -623,7 +628,9 @@ class _GalleryWidgetState extends State<galleryWidget> {
 }
 
 class AddToBasketWidget extends StatelessWidget {
-  const AddToBasketWidget({super.key});
+  Product product;
+
+  AddToBasketWidget(this.product, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -645,16 +652,31 @@ class AddToBasketWidget extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(15)),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: SizedBox(
-                height: 53,
-                width: 160,
-                child: Center(
-                  child: Text(
-                    'افزودن به سبد خرید',
-                    style: TextStyle(
-                      fontFamily: 'SB',
-                      fontSize: 16,
-                      color: Colors.white,
+              child: GestureDetector(
+                onTap: () {
+                  var item = BasketItem(
+                    product.id,
+                    product.collectionId,
+                    product.thumbnail,
+                    product.discountPrice,
+                    product.price,
+                    product.name,
+                    product.categoryId,
+                  );
+                  var box = Hive.box<BasketItem>('basketBox');
+                  box.add(item);
+                },
+                child: SizedBox(
+                  height: 53,
+                  width: 160,
+                  child: Center(
+                    child: Text(
+                      'افزودن به سبد خرید',
+                      style: TextStyle(
+                        fontFamily: 'SB',
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
