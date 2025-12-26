@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shop_sample/Data/model/basket_item.dart';
+import 'package:flutter_shop_sample/bloc/basket/basket_bloc.dart';
+import 'package:flutter_shop_sample/bloc/basket/basket_event.dart';
 import 'package:flutter_shop_sample/bloc/category/category_bloc.dart';
 import 'package:flutter_shop_sample/bloc/home/home_bloc.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
@@ -14,7 +16,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await Hive.initFlutter();
   Hive.registerAdapter(BasketItemAdapter());
   await Hive.openBox<BasketItem>('basketBox');
@@ -165,7 +167,14 @@ class _MyAppState extends State<MyApp> {
   List<Widget> getScreen() {
     return <Widget>[
       ProfileScreen(),
-      CardScreen(),
+      BlocProvider(
+        create: (context) {
+          var bloc = BasketBloc();
+          bloc.add(BasketRequestEvent());
+          return bloc;
+        },
+        child: CardScreen(),
+      ),
       BlocProvider(
         create: (context) => CategoryBloc(),
         child: CategoryScreen(),
