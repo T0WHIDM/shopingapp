@@ -19,7 +19,7 @@ class BasketItem {
   @HiveField(4)
   int price;
 
-  @HiveField(50)
+  @HiveField(5)
   String name;
 
   @HiveField(6)
