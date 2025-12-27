@@ -8,9 +8,26 @@ import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/cached_image.dart';
 import 'package:flutter_shop_sample/utility/extentions/string_extentions.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:zarinpal/zarinpal.dart';
 
-class CardScreen extends StatelessWidget {
+class CardScreen extends StatefulWidget {
   const CardScreen({super.key});
+
+  @override
+  State<CardScreen> createState() => _CardScreenState();
+}
+
+class _CardScreenState extends State<CardScreen> {
+ final PaymentRequest _paymentRequest = PaymentRequest();
+
+  @override
+  void initState() {
+    _paymentRequest.setIsSandBox(true);
+    _paymentRequest.setAmount(1000);
+    _paymentRequest.setDescription('this is test for apple shop');
+    _paymentRequest.setCallbackURL('expertflutter://shop');
+      super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,9 +135,9 @@ class CardScreen extends StatelessWidget {
 }
 
 class CardItem extends StatelessWidget {
-  BasketItem basketItem;
+final  BasketItem basketItem;
 
-  CardItem(this.basketItem, {super.key});
+ const CardItem(this.basketItem, {super.key});
 
   @override
   Widget build(BuildContext context) {
