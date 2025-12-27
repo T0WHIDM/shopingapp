@@ -79,31 +79,35 @@ class CardScreen extends StatelessWidget {
                     SliverPadding(padding: EdgeInsets.only(bottom: 100)),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 44.0,
-                    right: 44.0,
-                    bottom: 20,
-                  ),
-                  child: SizedBox(
-                    height: 53,
-                    width: MediaQuery.of(context).size.width,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: CustomColors.green,
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        'ادامه فرایند خرید',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'SM',
-                          fontSize: 18,
+                if (state is BasketDataFetchedState) ...{
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 44.0,
+                      right: 44.0,
+                      bottom: 20,
+                    ),
+                    child: SizedBox(
+                      height: 53,
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: CustomColors.green,
+                        ),
+                        onPressed: () {},
+                        child: Text(
+                          (state.basketFinalPrice == 0)
+                              ? 'سبد خرید شما خالیه'
+                              : '${state.basketFinalPrice}',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'SM',
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
+                },
               ],
             );
           },
@@ -168,7 +172,7 @@ class CardItem extends StatelessWidget {
                                   horizontal: 6,
                                 ),
                                 child: Text(
-                                  '%3',
+                                  '%${basketItem.percent!.ceil()}',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontFamily: 'SB',
@@ -184,7 +188,7 @@ class CardItem extends StatelessWidget {
                             ),
                             SizedBox(width: 5),
                             Text(
-                              '1550000',
+                              '${basketItem.realPrice}',
                               style: TextStyle(fontSize: 12, fontFamily: 'SM'),
                             ),
                           ],
@@ -270,7 +274,7 @@ class CardItem extends StatelessWidget {
                 Text('تومان', style: TextStyle(fontFamily: 'SB', fontSize: 16)),
                 SizedBox(width: 4),
                 Text(
-                  '59000000',
+                  '${basketItem.price}',
                   style: TextStyle(fontFamily: 'SB', fontSize: 16),
                 ),
               ],

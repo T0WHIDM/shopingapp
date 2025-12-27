@@ -10,7 +10,9 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
   BasketBloc() : super(BasketInitState()) {
     on<BasketRequestEvent>((event, emit) async {
       var basketItemList = await _basketRepository.getAllBasketItem();
-      emit(BasketDataFetchedState(basketItemList));
+      var basketFinalPrice = await _basketRepository.getBasketFinalPrice();
+
+      emit(BasketDataFetchedState(basketItemList, basketFinalPrice));
     });
   }
 }
