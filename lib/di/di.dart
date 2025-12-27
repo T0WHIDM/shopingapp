@@ -13,6 +13,7 @@ import 'package:flutter_shop_sample/Data/repository/category_product_repository.
 import 'package:flutter_shop_sample/Data/repository/category_repository.dart';
 import 'package:flutter_shop_sample/Data/repository/product_detail_repository.dart';
 import 'package:flutter_shop_sample/Data/repository/product_repository.dart';
+import 'package:flutter_shop_sample/bloc/basket/basket_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -59,4 +60,7 @@ Future<void> getItInit() async {
   locator.registerSingleton<SharedPreferences>(
     await SharedPreferences.getInstance(),
   );
+
+  //bloc
+  locator.registerSingleton<BasketBloc>(BasketBloc());
 }

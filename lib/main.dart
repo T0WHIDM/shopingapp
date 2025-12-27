@@ -169,7 +169,7 @@ class _MyAppState extends State<MyApp> {
       ProfileScreen(),
       BlocProvider(
         create: (context) {
-          var bloc = BasketBloc();
+          var bloc = locator.get<BasketBloc>();
           bloc.add(BasketRequestEvent());
           return bloc;
         },

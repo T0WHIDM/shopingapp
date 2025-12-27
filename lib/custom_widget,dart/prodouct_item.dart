@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shop_sample/Data/model/product.dart';
-import 'package:flutter_shop_sample/bloc/product/product_bloc.dart';
+import 'package:flutter_shop_sample/bloc/basket/basket_bloc.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/cached_image.dart';
+import 'package:flutter_shop_sample/di/di.dart';
 import 'package:flutter_shop_sample/screens/prodouct_detail_screen.dart';
 
 class ProdouctItem extends StatelessWidget {
-  Product product;
+  final Product product;
 
-  ProdouctItem(this.product, {super.key});
+  const ProdouctItem(this.product, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +19,8 @@ class ProdouctItem extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
-              return BlocProvider(
-                create: (context) => ProductBloc(),
+              return BlocProvider<BasketBloc>.value(
+                value: locator.get<BasketBloc>(),
                 child: ProdouctDetailScreen(product),
               );
             },

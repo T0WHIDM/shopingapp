@@ -1,24 +1,24 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_shop_sample/Data/model/basket_item.dart';
 import 'package:flutter_shop_sample/Data/model/product.dart';
 import 'package:flutter_shop_sample/Data/model/product_image.dart';
 import 'package:flutter_shop_sample/Data/model/product_variant.dart';
 import 'package:flutter_shop_sample/Data/model/properties.dart';
 import 'package:flutter_shop_sample/Data/model/variant.dart';
 import 'package:flutter_shop_sample/Data/model/variants_type.dart';
+import 'package:flutter_shop_sample/bloc/basket/basket_bloc.dart';
+import 'package:flutter_shop_sample/bloc/basket/basket_event.dart';
 import 'package:flutter_shop_sample/bloc/product/product_bloc.dart';
 import 'package:flutter_shop_sample/bloc/product/product_event.dart';
 import 'package:flutter_shop_sample/bloc/product/product_state.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/cached_image.dart';
-import 'package:hive/hive.dart';
 
 class ProdouctDetailScreen extends StatefulWidget {
-  Product product;
+  final Product product;
 
-  ProdouctDetailScreen(this.product, {super.key});
+  const ProdouctDetailScreen(this.product, {super.key});
 
   @override
   State<ProdouctDetailScreen> createState() => _ProdouctDetailScreenState();
@@ -26,12 +26,24 @@ class ProdouctDetailScreen extends StatefulWidget {
 
 class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
   @override
-  void initState() {
-    BlocProvider.of<ProductBloc>(
-      context,
-    ).add(ProductInitializeEvent(widget.product.id, widget.product.categoryId));
-    super.initState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) {
+        var bloc = ProductBloc();
+        bloc.add(
+          ProductInitializeEvent(widget.product.id, widget.product.categoryId),
+        );
+        return bloc;
+      },
+      child: detailContentWidget(parentWidget: widget),
+    );
   }
+}
+
+class detailContentWidget extends StatelessWidget {
+  const detailContentWidget({super.key, required this.parentWidget});
+
+  final ProdouctDetailScreen parentWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +128,7 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: Text(
                       textAlign: TextAlign.center,
-                      widget.product.name,
+                      parentWidget.product.name,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'SB',
@@ -132,7 +144,7 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                       return SliverToBoxAdapter(child: Text(l));
                     },
                     (r) {
-                      return galleryWidget(r, widget.product.thumbnail);
+                      return galleryWidget(r, parentWidget.product.thumbnail);
                     },
                   ),
                 ],
@@ -158,7 +170,7 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                   ),
                 },
 
-                ProductDescription(widget.product.description),
+                ProductDescription(parentWidget.product.description),
                 SliverToBoxAdapter(
                   child: Container(
                     height: 46,
@@ -271,7 +283,7 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         PriceWidget(),
-                        AddToBasketWidget(widget.product),
+                        AddToBasketWidget(parentWidget.product),
                       ],
                     ),
                   ),
@@ -655,6 +667,7 @@ class AddToBasketWidget extends StatelessWidget {
               child: GestureDetector(
                 onTap: () {
                   context.read<ProductBloc>().add(ProductAddToBasket(product));
+                  context.read<BasketBloc>().add(BasketRequestEvent());
                 },
                 child: SizedBox(
                   height: 53,
