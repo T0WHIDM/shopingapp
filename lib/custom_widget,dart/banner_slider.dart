@@ -22,7 +22,7 @@ class BannerSlider extends StatelessWidget {
             controller: controller,
             itemCount: bannerList.length,
             itemBuilder: (context, index) {
-              return Container(
+              return  Container(
                 margin: EdgeInsets.symmetric(horizontal: 6),
                 child: CachedImage(imageUrl: bannerList[index].thumbnail!),
               );

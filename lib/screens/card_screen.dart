@@ -7,32 +7,13 @@ import 'package:flutter_shop_sample/bloc/basket/basket_state.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/cached_image.dart';
 import 'package:flutter_shop_sample/utility/extentions/string_extentions.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:zarinpal/zarinpal.dart';
 
-class CardScreen extends StatefulWidget {
+
+class CardScreen extends StatelessWidget {
   const CardScreen({super.key});
 
   @override
-  State<CardScreen> createState() => _CardScreenState();
-}
-
-class _CardScreenState extends State<CardScreen> {
- final PaymentRequest _paymentRequest = PaymentRequest();
-
-  @override
-  void initState() {
-    _paymentRequest.setIsSandBox(true);
-    _paymentRequest.setAmount(1000);
-    _paymentRequest.setDescription('this is test for apple shop');
-    _paymentRequest.setCallbackURL('expertflutter://shop');
-      super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    var box = Hive.box<BasketItem>('basketBox');
-
     return Scaffold(
       backgroundColor: CustomColors.backgroundScreenColor,
       body: SafeArea(
@@ -135,9 +116,9 @@ class _CardScreenState extends State<CardScreen> {
 }
 
 class CardItem extends StatelessWidget {
-final  BasketItem basketItem;
+  final BasketItem basketItem;
 
- const CardItem(this.basketItem, {super.key});
+  const CardItem(this.basketItem, {super.key});
 
   @override
   Widget build(BuildContext context) {
