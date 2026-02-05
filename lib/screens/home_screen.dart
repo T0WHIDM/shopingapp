@@ -9,8 +9,8 @@ import 'package:flutter_shop_sample/bloc/home/home_state.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/banner_slider.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/category_item_chip.dart';
+import 'package:flutter_shop_sample/custom_widget,dart/loading_animaation.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/prodouct_item.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -97,27 +97,7 @@ Widget homeScreenContent(HomeState state, BuildContext context) {
   }
 }
 
-class LoadingAnimation extends StatelessWidget {
-  const LoadingAnimation({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 60,
-      width: 60,
-      child: Center(
-        child: LoadingIndicator(
-          indicatorType: Indicator.ballRotateChase,
-          colors: [
-            CustomColors.blueIndicator,
-            CustomColors.green,
-            CustomColors.red,
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class _MostViewProdouct extends StatelessWidget {
   List<Product> productList;

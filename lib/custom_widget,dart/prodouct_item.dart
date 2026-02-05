@@ -6,6 +6,7 @@ import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/cached_image.dart';
 import 'package:flutter_shop_sample/di/di.dart';
 import 'package:flutter_shop_sample/screens/prodouct_detail_screen.dart';
+import 'package:flutter_shop_sample/utility/extentions/int_extention.dart';
 
 class ProdouctItem extends StatelessWidget {
   final Product product;
@@ -128,7 +129,7 @@ class ProdouctItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              product.realPrice.toString(),
+                              product.realPrice.convertToPrice(),
                               style: TextStyle(
                                 fontFamily: 'SB',
                                 fontSize: 12,
@@ -137,7 +138,7 @@ class ProdouctItem extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              product.price.toString(),
+                              product.price.convertToPrice(),
                               style: TextStyle(
                                 fontFamily: 'SM',
                                 fontSize: 16,
