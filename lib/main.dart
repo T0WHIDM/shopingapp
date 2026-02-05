@@ -6,6 +6,7 @@ import 'package:flutter_shop_sample/bloc/basket/basket_bloc.dart';
 import 'package:flutter_shop_sample/bloc/basket/basket_event.dart';
 import 'package:flutter_shop_sample/bloc/category/category_bloc.dart';
 import 'package:flutter_shop_sample/bloc/home/home_bloc.dart';
+import 'package:flutter_shop_sample/bloc/home/home_event.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/di/di.dart';
 import 'package:flutter_shop_sample/screens/card_screen.dart';
@@ -182,7 +183,11 @@ class _MyAppState extends State<MyApp> {
       Directionality(
         textDirection: TextDirection.rtl,
         child: BlocProvider(
-          create: (context) => HomeBloc(),
+          create: (context) {
+            var bloc = HomeBloc();
+            bloc.add(HomeGetInitializeData());
+            return bloc;
+          },
           child: HomeScreen(),
         ),
       ),

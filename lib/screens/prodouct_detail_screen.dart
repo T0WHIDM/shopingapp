@@ -35,13 +35,13 @@ class _ProdouctDetailScreenState extends State<ProdouctDetailScreen> {
         );
         return bloc;
       },
-      child: detailContentWidget(parentWidget: widget),
+      child: DetailContentWidget(parentWidget: widget),
     );
   }
 }
 
-class detailContentWidget extends StatelessWidget {
-  const detailContentWidget({super.key, required this.parentWidget});
+class DetailContentWidget extends StatelessWidget {
+  const DetailContentWidget({super.key, required this.parentWidget});
 
   final ProdouctDetailScreen parentWidget;
 
@@ -298,9 +298,9 @@ class detailContentWidget extends StatelessWidget {
 }
 
 class ProductProperties extends StatefulWidget {
-  List<Property> productPropertyList;
+  final List<Property> productPropertyList;
 
-  ProductProperties(this.productPropertyList, {super.key});
+  const ProductProperties(this.productPropertyList, {super.key});
 
   @override
   State<ProductProperties> createState() => _ProductPropertiesState();
