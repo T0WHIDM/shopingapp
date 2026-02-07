@@ -9,6 +9,9 @@ import 'package:flutter_shop_sample/Data/model/variant.dart';
 import 'package:flutter_shop_sample/Data/model/variants_type.dart';
 import 'package:flutter_shop_sample/bloc/basket/basket_bloc.dart';
 import 'package:flutter_shop_sample/bloc/basket/basket_event.dart';
+import 'package:flutter_shop_sample/bloc/comment/comment_bloc.dart';
+import 'package:flutter_shop_sample/bloc/comment/comment_event.dart';
+import 'package:flutter_shop_sample/bloc/comment/comment_state.dart';
 import 'package:flutter_shop_sample/bloc/product/product_bloc.dart';
 import 'package:flutter_shop_sample/bloc/product/product_event.dart';
 import 'package:flutter_shop_sample/bloc/product/product_state.dart';
@@ -168,103 +171,132 @@ class DetailContentWidget extends StatelessWidget {
                 },
                 if (state is ProductSuccessResponseState) ...{
                   SliverToBoxAdapter(
-                    child: Container(
-                      height: 46,
-                      margin: EdgeInsets.only(left: 44, right: 44, top: 20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: CustomColors.gery, width: 1),
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                      ),
-                      child: Row(
-                        children: [
-                          SizedBox(width: 10),
-                          Image.asset('assets/images/icon_left_categroy.png'),
-                          SizedBox(width: 10),
-                          Text(
-                            'مشاهده',
-                            style: TextStyle(
-                              color: CustomColors.blue,
-                              fontFamily: 'SB',
-                              fontSize: 12,
-                            ),
+                    child: GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return BlocProvider(
+                              create: (context) {
+                                final bloc = CommentBloc();
+                                bloc.add(
+                                  CommentInitialEvent(parentWidget.product.id),
+                                );
+                                return bloc;
+                              },
+                              child: DraggableScrollableSheet(
+                                initialChildSize: 0.6,
+                                maxChildSize: 0.7,
+                                minChildSize: 0.2,
+                                builder: (context, scrollController) {
+                                  return CommentBottomSheet(scrollController);
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        height: 46,
+                        margin: EdgeInsets.only(left: 44, right: 44, top: 20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: CustomColors.gery,
+                            width: 1,
                           ),
-                          Spacer(),
-                          Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 10),
-                                height: 26,
-                                width: 26,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                ),
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                        ),
+                        child: Row(
+                          children: [
+                            SizedBox(width: 10),
+                            Image.asset('assets/images/icon_left_categroy.png'),
+                            SizedBox(width: 10),
+                            Text(
+                              'مشاهده',
+                              style: TextStyle(
+                                color: CustomColors.blue,
+                                fontFamily: 'SB',
+                                fontSize: 12,
                               ),
-                              Positioned(
-                                right: 15,
-                                child: Container(
+                            ),
+                            Spacer(),
+                            Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Container(
                                   margin: EdgeInsets.only(left: 10),
                                   height: 26,
                                   width: 26,
                                   decoration: BoxDecoration(
-                                    color: Colors.blue,
+                                    color: Colors.red,
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                right: 30,
-                                child: Container(
-                                  margin: EdgeInsets.only(left: 10),
-                                  height: 26,
-                                  width: 26,
-                                  decoration: BoxDecoration(
-                                    color: Colors.yellow,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                right: 45,
-                                child: Container(
-                                  margin: EdgeInsets.only(left: 10),
-                                  height: 26,
-                                  width: 26,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      '+10',
-                                      style: TextStyle(
-                                        fontFamily: 'SB',
-                                        fontSize: 10,
-                                        color: Colors.white,
+                                Positioned(
+                                  right: 15,
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 10),
+                                    height: 26,
+                                    width: 26,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            ': نظرات کاربران',
-                            style: TextStyle(fontFamily: 'SB', fontSize: 12),
-                          ),
-                          SizedBox(width: 10),
-                        ],
+                                Positioned(
+                                  right: 30,
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 10),
+                                    height: 26,
+                                    width: 26,
+                                    decoration: BoxDecoration(
+                                      color: Colors.yellow,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 45,
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 10),
+                                    height: 26,
+                                    width: 26,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '+10',
+                                        style: TextStyle(
+                                          fontFamily: 'SB',
+                                          fontSize: 10,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              ': نظرات کاربران',
+                              style: TextStyle(fontFamily: 'SB', fontSize: 12),
+                            ),
+                            SizedBox(width: 10),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -292,6 +324,51 @@ class DetailContentWidget extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class CommentBottomSheet extends StatelessWidget {
+  final ScrollController controller;
+  const CommentBottomSheet(this.controller, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CommentBloc, CommentState>(
+      builder: (context, state) {
+        if (state is CommentLoadingState) {
+          return Center(child: LoadingAnimation());
+        }
+        return CustomScrollView(
+          controller: controller,
+          slivers: [
+            if (state is CommentResponseState) ...{
+              state.response.fold(
+                (error) {
+                  return Text('error');
+                },
+                (commentList) {
+                  if (commentList.isEmpty) {
+                    return SliverToBoxAdapter(
+                      child: Center(
+                        child: Text('نظری برای این محصول ثیت نشده'),
+                      ),
+                    );
+                  }
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      childCount: commentList.length,
+                      (context, index) {
+                        return Center(child: Text(commentList[index].text));
+                      },
+                    ),
+                  );
+                },
+              ),
+            },
+          ],
+        );
+      },
     );
   }
 }

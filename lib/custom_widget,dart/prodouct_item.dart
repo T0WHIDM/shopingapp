@@ -141,7 +141,7 @@ class ProdouctItem extends StatelessWidget {
                               product.price.convertToPrice(),
                               style: TextStyle(
                                 fontFamily: 'SM',
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: Colors.white,
                               ),
                             ),
