@@ -359,7 +359,38 @@ class CommentBottomSheet extends StatelessWidget {
                     delegate: SliverChildBuilderDelegate(
                       childCount: commentList.length,
                       (context, index) {
-                        return Center(child: Text(commentList[index].text));
+                        return Center(
+                          child: Container(
+                            padding: EdgeInsets.all(16),
+                            margin: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(16),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    commentList[index].text,
+                                    textAlign: TextAlign.end,
+                                  ),
+                                ),
+                                SizedBox(width: 15),
+                                SizedBox(
+                                  width: 40,
+                                  height: 40,
+                                  child: CachedImage(
+                                    radius: 16,
+                                    imageUrl:
+                                        commentList[index].userThumbnailUrl,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
                       },
                     ),
                   );
