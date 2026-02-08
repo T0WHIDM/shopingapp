@@ -14,13 +14,11 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
     });
 
     on<CommentPostEvent>((event, emit) async {
-      emit(PostCommentLoading(true));
-      var response = await commentRepository.postComment(
-        event.productId,
-        event.text,
-      );
-      emit(PostCommentLoading(false));
-      emit(PostCommentSuccess(response));
+      emit(CommentLoadingState());
+      await commentRepository.postComment(event.productId, event.text);
+      await Future.delayed(const Duration(milliseconds: 500));
+      final response = await commentRepository.getComment(event.productId);
+      emit(CommentResponseState(response));
     });
   }
 }

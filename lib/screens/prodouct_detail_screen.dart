@@ -12,6 +12,7 @@ import 'package:flutter_shop_sample/bloc/basket/basket_event.dart';
 import 'package:flutter_shop_sample/bloc/comment/comment_bloc.dart';
 import 'package:flutter_shop_sample/bloc/comment/comment_event.dart';
 import 'package:flutter_shop_sample/bloc/comment/comment_state.dart';
+import 'package:flutter_shop_sample/bloc/home/home_bloc.dart';
 import 'package:flutter_shop_sample/bloc/product/product_bloc.dart';
 import 'package:flutter_shop_sample/bloc/product/product_event.dart';
 import 'package:flutter_shop_sample/bloc/product/product_state.dart';
@@ -174,6 +175,10 @@ class DetailContentWidget extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         showModalBottomSheet(
+                          isDismissible: true,
+                          isScrollControlled: true,
+                          useSafeArea: true,
+                          showDragHandle: true,
                           context: context,
                           builder: (context) {
                             return BlocProvider(
@@ -184,13 +189,8 @@ class DetailContentWidget extends StatelessWidget {
                                 );
                                 return bloc;
                               },
-                              child: DraggableScrollableSheet(
-                                initialChildSize: 0.6,
-                                maxChildSize: 0.7,
-                                minChildSize: 0.2,
-                                builder: (context, scrollController) {
-                                  return CommentBottomSheet(scrollController);
-                                },
+                              child: CommentBottomSheet(
+                                productId: parentWidget.product.id,
                               ),
                             );
                           },
@@ -328,9 +328,23 @@ class DetailContentWidget extends StatelessWidget {
   }
 }
 
-class CommentBottomSheet extends StatelessWidget {
-  final ScrollController controller;
-  const CommentBottomSheet(this.controller, {super.key});
+class CommentBottomSheet extends StatefulWidget {
+  final String productId;
+
+  const CommentBottomSheet({required this.productId, super.key});
+
+  @override
+  State<CommentBottomSheet> createState() => _CommentBottomSheetState();
+}
+
+class _CommentBottomSheetState extends State<CommentBottomSheet> {
+  final TextEditingController textController = TextEditingController();
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -339,64 +353,124 @@ class CommentBottomSheet extends StatelessWidget {
         if (state is CommentLoadingState) {
           return Center(child: LoadingAnimation());
         }
-        return CustomScrollView(
-          controller: controller,
-          slivers: [
-            if (state is CommentResponseState) ...{
-              state.response.fold(
-                (error) {
-                  return Text('error');
-                },
-                (commentList) {
-                  if (commentList.isEmpty) {
-                    return SliverToBoxAdapter(
-                      child: Center(
-                        child: Text('نظری برای این محصول ثیت نشده'),
-                      ),
-                    );
-                  }
-                  return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      childCount: commentList.length,
-                      (context, index) {
-                        return Center(
-                          child: Container(
-                            padding: EdgeInsets.all(16),
-                            margin: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(16),
-                              ),
+        return Column(
+          children: [
+            Expanded(
+              child: CustomScrollView(
+                slivers: [
+                  if (state is CommentResponseState) ...{
+                    state.response.fold(
+                      (error) {
+                        return Text('error');
+                      },
+                      (commentList) {
+                        if (commentList.isEmpty) {
+                          return SliverToBoxAdapter(
+                            child: Center(
+                              child: Text('نظری برای این محصول ثیت نشده'),
                             ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    commentList[index].text,
-                                    textAlign: TextAlign.end,
+                          );
+                        }
+                        return SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            childCount: commentList.length,
+                            (context, index) {
+                              return Center(
+                                child: Container(
+                                  padding: EdgeInsets.all(16),
+                                  margin: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(16),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          commentList[index].text,
+                                          textAlign: TextAlign.end,
+                                        ),
+                                      ),
+                                      SizedBox(width: 15),
+                                      SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: CachedImage(
+                                          radius: 16,
+                                          imageUrl: commentList[index]
+                                              .userThumbnailUrl,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                SizedBox(width: 15),
-                                SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: CachedImage(
-                                    radius: 16,
-                                    imageUrl:
-                                        commentList[index].userThumbnailUrl,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              );
+                            },
                           ),
                         );
                       },
                     ),
-                  );
-                },
+                  },
+                ],
               ),
-            },
+            ),
+            // در کلاس _CommentBottomSheetState
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: textController,
+                      style: const TextStyle(color: Colors.black),
+                      decoration: const InputDecoration(
+                        hintText: 'نظر خود را بنویسید...',
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          borderSide: BorderSide(color: Colors.black, width: 1),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    // به جای استفاده از Stack و لایه‌های پیچیده، از یک دکمه ساده استفاده کن
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: CustomColors.blue,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        onPressed: () {
+                          if (textController.text.isNotEmpty) {
+                            // اطمینان از ارسال ایونت
+                            context.read<CommentBloc>().add(
+                              CommentPostEvent(
+                                widget.productId,
+                                textController.text,
+                              ),
+                            );
+                            print("Comment Event Sent: ${textController.text}");
+                            textController.clear();
+                          }
+                        },
+                        child: const Text(
+                          'ثبت نظر',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'SB',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         );
       },
