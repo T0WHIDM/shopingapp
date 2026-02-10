@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_shop_sample/di/di.dart';
 import 'package:flutter_shop_sample/utility/api_exeption.dart';
+import 'package:flutter_shop_sample/utility/dio_provider.dart';
 
 abstract class IAuthenticationDataSource {
   Future<void> register(
@@ -13,7 +13,7 @@ abstract class IAuthenticationDataSource {
 }
 
 class AuthenticationRemote implements IAuthenticationDataSource {
-  final Dio _dio = locator.get();
+  final Dio _dio = DioProvider.createDioWithOutHeader();
 
   @override
   Future<void> register(

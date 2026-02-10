@@ -7,6 +7,7 @@ import 'package:flutter_shop_sample/bloc/basket/basket_event.dart';
 import 'package:flutter_shop_sample/bloc/basket/basket_state.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/cached_image.dart';
+import 'package:flutter_shop_sample/utility/extentions/int_extention.dart';
 import 'package:flutter_shop_sample/utility/extentions/string_extentions.dart';
 
 class CardScreen extends StatelessWidget {
@@ -95,7 +96,7 @@ class CardScreen extends StatelessWidget {
                         child: Text(
                           (state.basketFinalPrice == 0)
                               ? 'سبد خرید شما خالیه'
-                              : '${state.basketFinalPrice}',
+                              : state.basketFinalPrice.convertToPrice(),
                           style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'SM',
@@ -187,7 +188,7 @@ class CardItem extends StatelessWidget {
                             ),
                             SizedBox(width: 5),
                             Text(
-                              '${basketItem.realPrice}',
+                              basketItem.realPrice.convertToPrice(),
                               style: TextStyle(fontSize: 12, fontFamily: 'SM'),
                             ),
                           ],
@@ -282,7 +283,7 @@ class CardItem extends StatelessWidget {
                 Text('تومان', style: TextStyle(fontFamily: 'SB', fontSize: 16)),
                 SizedBox(width: 4),
                 Text(
-                  '${basketItem.price}',
+                  basketItem.price.convertToPrice(),
                   style: TextStyle(fontFamily: 'SB', fontSize: 16),
                 ),
               ],

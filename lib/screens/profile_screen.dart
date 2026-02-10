@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shop_sample/bloc/authitication/auth_bloc.dart';
+import 'package:flutter_shop_sample/bloc/authitication/auth_state.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/category_item_chip.dart';
+import 'package:flutter_shop_sample/main.dart';
+import 'package:flutter_shop_sample/screens/dashboard_screen.dart';
 import 'package:flutter_shop_sample/screens/login_screen.dart';
 import 'package:flutter_shop_sample/utility/auth_manager.dart';
 
@@ -50,7 +53,24 @@ class ProfileScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) {
                       return BlocProvider(
-                        create: (context) => AuthBloc(),
+                        create: (context) {
+                          var authBloc = AuthBloc();
+                          authBloc.stream.forEach((state) {
+                            if (state is AuthResponseState) {
+                              state.response.fold((l) {}, (r) {
+                                globalNavigatorKey.currentState
+                                    ?.pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return DashboardScreen();
+                                        },
+                                      ),
+                                    );
+                              });
+                            }
+                          });
+                          return authBloc;
+                        },
                         child: LoginScreen(),
                       );
                     },

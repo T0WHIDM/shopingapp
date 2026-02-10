@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_shop_sample/utility/auth_manager.dart';
 
 class DioProvider {
-  Dio createDio() {
+  static Dio createDio() {
     Dio dio = Dio(
       BaseOptions(
         baseUrl: 'https://startflutter.ir/api/',
@@ -12,6 +12,12 @@ class DioProvider {
         },
       ),
     );
+
+    return dio;
+  }
+
+  static Dio createDioWithOutHeader() {
+    Dio dio = Dio(BaseOptions(baseUrl: 'https://startflutter.ir/api/'));
 
     return dio;
   }

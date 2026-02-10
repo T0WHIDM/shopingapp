@@ -28,7 +28,7 @@ Future<void> getItInit() async {
     await SharedPreferences.getInstance(),
   );
 
-  locator.registerSingleton<Dio>(DioProvider().createDio());
+  locator.registerSingleton<Dio>(DioProvider.createDio());
 
   //dataSources
   locator.registerFactory<IAuthenticationDataSource>(
