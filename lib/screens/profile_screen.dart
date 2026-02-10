@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_shop_sample/bloc/authitication/auth_bloc.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/category_item_chip.dart';
+import 'package:flutter_shop_sample/screens/login_screen.dart';
+import 'package:flutter_shop_sample/utility/auth_manager.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -38,6 +42,22 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                AuthManager.logOut();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return BlocProvider(
+                        create: (context) => AuthBloc(),
+                        child: LoginScreen(),
+                      );
+                    },
+                  ),
+                );
+              },
+              child: Text('خروج از حساب کاربری'),
             ),
             Text(
               'توحید غلامی',

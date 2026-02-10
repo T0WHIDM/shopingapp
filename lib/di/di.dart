@@ -16,15 +16,19 @@ import 'package:flutter_shop_sample/Data/repository/comment_repository.dart';
 import 'package:flutter_shop_sample/Data/repository/product_detail_repository.dart';
 import 'package:flutter_shop_sample/Data/repository/product_repository.dart';
 import 'package:flutter_shop_sample/bloc/basket/basket_bloc.dart';
+import 'package:flutter_shop_sample/utility/dio_provider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 var locator = GetIt.instance;
 
 Future<void> getItInit() async {
-  locator.registerSingleton<Dio>(
-    Dio(BaseOptions(baseUrl: 'https://startflutter.ir/api/')),
+  //component
+  locator.registerSingleton<SharedPreferences>(
+    await SharedPreferences.getInstance(),
   );
+
+  locator.registerSingleton<Dio>(DioProvider().createDio());
 
   //dataSources
   locator.registerFactory<IAuthenticationDataSource>(
@@ -59,11 +63,6 @@ Future<void> getItInit() async {
   );
   locator.registerFactory<IBasketRepository>(() => BasketRepository());
   locator.registerFactory<ICommentRepository>(() => CommentRepository());
-
-  //component
-  locator.registerSingleton<SharedPreferences>(
-    await SharedPreferences.getInstance(),
-  );
 
   //bloc
   locator.registerSingleton<BasketBloc>(BasketBloc());

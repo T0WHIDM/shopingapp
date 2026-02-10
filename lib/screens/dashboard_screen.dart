@@ -1,0 +1,179 @@
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_shop_sample/bloc/basket/basket_bloc.dart';
+import 'package:flutter_shop_sample/bloc/basket/basket_event.dart';
+import 'package:flutter_shop_sample/bloc/category/category_bloc.dart';
+import 'package:flutter_shop_sample/bloc/home/home_bloc.dart';
+import 'package:flutter_shop_sample/bloc/home/home_event.dart';
+import 'package:flutter_shop_sample/constants/colors.dart';
+import 'package:flutter_shop_sample/di/di.dart';
+import 'package:flutter_shop_sample/screens/card_screen.dart';
+import 'package:flutter_shop_sample/screens/category_screen.dart';
+import 'package:flutter_shop_sample/screens/home_screen.dart';
+import 'package:flutter_shop_sample/screens/profile_screen.dart';
+
+class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  int selectedindex = 3;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        
+        body: IndexedStack(index: selectedindex, children: getScreen()),
+        bottomNavigationBar: ClipRRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
+            child: BottomNavigationBar(
+              currentIndex: selectedindex,
+              onTap: (int index) {
+                setState(() {
+                  selectedindex = index;
+                });
+              },
+              selectedLabelStyle: TextStyle(
+                fontFamily: 'SB',
+                fontSize: 10,
+                color: CustomColors.blue,
+              ),
+              unselectedLabelStyle: TextStyle(
+                fontFamily: 'SB',
+                fontSize: 10,
+                color: Colors.black,
+              ),
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Image.asset('assets/images/icon_profile.png'),
+                  activeIcon: Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blue,
+                            blurRadius: 20,
+                            spreadRadius: -7,
+                            offset: Offset(00, 13),
+                          ),
+                        ],
+                      ),
+                      child: Image.asset(
+                        'assets/images/icon_profile_active.png',
+                      ),
+                    ),
+                  ),
+                  label: 'حساب کاربری',
+                ),
+                BottomNavigationBarItem(
+                  icon: Image.asset('assets/images/icon_basket.png'),
+                  activeIcon: Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blue,
+                            blurRadius: 20,
+                            spreadRadius: -7,
+                            offset: Offset(00, 13),
+                          ),
+                        ],
+                      ),
+                      child: Image.asset(
+                        'assets/images/icon_basket_active.png',
+                      ),
+                    ),
+                  ),
+                  label: 'سبد خرید',
+                ),
+                BottomNavigationBarItem(
+                  icon: Image.asset('assets/images/icon_category.png'),
+                  activeIcon: Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blue,
+                            blurRadius: 20,
+                            spreadRadius: -7,
+                            offset: Offset(00, 13),
+                          ),
+                        ],
+                      ),
+                      child: Image.asset(
+                        'assets/images/icon_category_active.png',
+                      ),
+                    ),
+                  ),
+                  label: 'دسته بندی',
+                ),
+                BottomNavigationBarItem(
+                  icon: Image.asset('assets/images/icon_home.png'),
+                  activeIcon: Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blue,
+                            blurRadius: 20,
+                            spreadRadius: -7,
+                            offset: Offset(00, 13),
+                          ),
+                        ],
+                      ),
+                      child: Image.asset('assets/images/icon_home_active.png'),
+                    ),
+                  ),
+                  label: 'خانه',
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> getScreen() {
+    return <Widget>[
+      ProfileScreen(),
+      BlocProvider(
+        create: (context) {
+          var bloc = locator.get<BasketBloc>();
+          bloc.add(BasketRequestEvent());
+          return bloc;
+        },
+        child: CardScreen(),
+      ),
+      BlocProvider(
+        create: (context) => CategoryBloc(),
+        child: CategoryScreen(),
+      ),
+      Directionality(
+        textDirection: TextDirection.rtl,
+        child: BlocProvider(
+          create: (context) {
+            var bloc = HomeBloc();
+            bloc.add(HomeGetInitializeData());
+            return bloc;
+          },
+          child: HomeScreen(),
+        ),
+      ),
+    ];
+  }
+}
