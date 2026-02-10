@@ -41,7 +41,7 @@ Future<void> getItInit() async {
   locator.registerFactory<ICategoryProductDataSource>(
     () => CategoryProductDataSourceRemote(),
   );
-  locator.registerFactory<IBasketDataSource>(() => BasketLocalDataSource());
+  locator.registerFactory<IBasketDataSource>(() => BasketLoc0alDataSource());
   locator.registerFactory<ICommentDataSource>(() => CommentDataSource());
 
   //repositories

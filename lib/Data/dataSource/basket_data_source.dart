@@ -5,9 +5,10 @@ abstract class IBasketDataSource {
   Future<void> addProduct(BasketItem basketItem);
   Future<List<BasketItem>> getAllBasketItem();
   Future<int> getBasketFinalPrice();
+  Future<void> removeProduct(int index);
 }
 
-class BasketLocalDataSource extends IBasketDataSource {
+class BasketLoc0alDataSource extends IBasketDataSource {
   var box = Hive.box<BasketItem>('basketBox');
 
   @override
@@ -28,5 +29,10 @@ class BasketLocalDataSource extends IBasketDataSource {
       (accumulator, product) => accumulator + product.realPrice!,
     );
     return finalPrice;
+  }
+
+  @override
+  Future<void> removeProduct(int index) async {
+    box.deleteAt(index);
   }
 }

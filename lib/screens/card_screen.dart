@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shop_sample/Data/model/basket_item.dart';
 import 'package:flutter_shop_sample/bloc/basket/basket_bloc.dart';
+import 'package:flutter_shop_sample/bloc/basket/basket_event.dart';
 import 'package:flutter_shop_sample/bloc/basket/basket_state.dart';
 import 'package:flutter_shop_sample/constants/colors.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/cached_image.dart';
 import 'package:flutter_shop_sample/utility/extentions/string_extentions.dart';
-
 
 class CardScreen extends StatelessWidget {
   const CardScreen({super.key});
@@ -67,7 +67,7 @@ class CardScreen extends StatelessWidget {
                             delegate: SliverChildBuilderDelegate(
                               childCount: basketItemList.length,
                               (context, index) {
-                                return CardItem(basketItemList[index]);
+                                return CardItem(basketItemList[index], index);
                               },
                             ),
                           );
@@ -117,8 +117,9 @@ class CardScreen extends StatelessWidget {
 
 class CardItem extends StatelessWidget {
   final BasketItem basketItem;
+  final int index;
 
-  const CardItem(this.basketItem, {super.key});
+  const CardItem(this.basketItem, this.index, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -196,38 +197,47 @@ class CardItem extends StatelessWidget {
                           spacing: 8,
 
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: CustomColors.red,
-                                  width: 1.5,
+                            GestureDetector(
+                              onTap: () {
+                                context.read<BasketBloc>().add(
+                                  BasketRemoveProductEvent(index),
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: CustomColors.red,
+                                    width: 1.5,
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 2,
-                                  bottom: 2,
-                                  right: 8,
-                                  left: 8,
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      'حذف',
-                                      style: TextStyle(
-                                        color: CustomColors.red,
-                                        fontFamily: 'SM',
-                                        fontSize: 12,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 2,
+                                    bottom: 2,
+                                    right: 8,
+                                    left: 8,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        'حذف',
+                                        style: TextStyle(
+                                          color: CustomColors.red,
+                                          fontFamily: 'SM',
+                                          fontSize: 12,
+                                        ),
+                                        textDirection: TextDirection.rtl,
                                       ),
-                                      textDirection: TextDirection.rtl,
-                                    ),
-                                    SizedBox(width: 4),
-                                    Image.asset('assets/images/icon_trash.png'),
-                                  ],
+                                      SizedBox(width: 4),
+                                      Image.asset(
+                                        'assets/images/icon_trash.png',
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
