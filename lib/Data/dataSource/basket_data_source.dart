@@ -26,7 +26,7 @@ class BasketLoc0alDataSource extends IBasketDataSource {
     var productList = box.values.toList();
     var finalPrice = productList.fold(
       0,
-      (accumulator, product) => accumulator + product.realPrice!,
+      (accumulator, product) => accumulator + product.price,
     );
     return finalPrice;
   }
