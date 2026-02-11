@@ -29,7 +29,7 @@ class AuthenticationRepository extends IAuthenticationRepository {
       await _dataSource.register(userName, password, passwordConfirm);
       return right('ثبت نام انجام شد');
     } on ApiExeption catch (ex) {
-      return left(ex.message!);
+      return left(ex.message ?? 'خطا محتوای متنی ندارد');
     }
   }
 
@@ -38,7 +38,6 @@ class AuthenticationRepository extends IAuthenticationRepository {
     try {
       String token = await _dataSource.login(userName, password);
       if (token.isNotEmpty) {
-        AuthManager.saveToken(token);
         return right('شما وارد شدید');
       } else {
         return left('خطایی در ورود پیش امده است');
