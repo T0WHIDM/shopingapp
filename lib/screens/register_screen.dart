@@ -5,13 +5,14 @@ import 'package:flutter_shop_sample/bloc/authitication/auth_event.dart';
 import 'package:flutter_shop_sample/bloc/authitication/auth_state.dart';
 import 'package:flutter_shop_sample/custom_widget,dart/loading_animaation.dart';
 import 'package:flutter_shop_sample/screens/dashboard_screen.dart';
-import 'package:flutter_shop_sample/screens/register_screen.dart';
+import 'package:flutter_shop_sample/screens/login_screen.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  RegisterScreen({super.key});
 
   final _usernameTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
+  final _passwordConfirmTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class LoginScreen extends StatelessWidget {
       child: ViewContainer(
         usernameTextController: _usernameTextController,
         passwordTextController: _passwordTextController,
+        passwordConfirmTextController: _passwordConfirmTextController,
       ),
     );
   }
@@ -30,11 +32,14 @@ class ViewContainer extends StatelessWidget {
     super.key,
     required TextEditingController usernameTextController,
     required TextEditingController passwordTextController,
+    required TextEditingController passwordConfirmTextController,
   }) : _usernameTextController = usernameTextController,
-       _passwordTextController = passwordTextController;
+       _passwordTextController = passwordTextController,
+       _passwordConfirmTextController = passwordConfirmTextController;
 
   final TextEditingController _usernameTextController;
   final TextEditingController _passwordTextController;
+  final TextEditingController _passwordConfirmTextController;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +55,7 @@ class ViewContainer extends StatelessWidget {
                 SizedBox(
                   height: 200,
                   width: 200,
-                  child: Image.asset('assets/images/login_photo.jpg'),
+                  child: Image.asset('assets/images/register.jpg'),
                 ),
                 const SizedBox(height: 60),
                 Padding(
@@ -73,7 +78,7 @@ class ViewContainer extends StatelessWidget {
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             labelStyle: TextStyle(
-                              fontFamily: 'sm',
+                              fontFamily: 'dana',
                               fontSize: 18,
                               color: Colors.black,
                             ),
@@ -120,36 +125,53 @@ class ViewContainer extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 24,
+                    right: 24,
+                    bottom: 24,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'تکرار رمز عبور :',
+                        style: TextStyle(fontFamily: 'dana', fontSize: 16),
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: TextField(
+                          controller: _passwordConfirmTextController,
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            labelStyle: TextStyle(
+                              fontFamily: 'sm',
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 BlocConsumer<AuthBloc, AuthState>(
                   listener: ((context, state) {
                     if (state is AuthResponseState) {
-                      state.response.fold(
-                        (l) {
-                          _usernameTextController.text = '';
-                          _passwordTextController.text = '';
-                          var snackbar = SnackBar(
-                            content: Text(
-                              l,
-                              style: TextStyle(
-                                fontFamily: 'dana',
-                                fontSize: 14,
-                              ),
-                            ),
-                            backgroundColor: Colors.black,
-                            behavior: SnackBarBehavior.floating,
-                            duration: Duration(seconds: 1),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                        },
-                        (r) {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => DashboardScreen(),
-                            ),
-                          );
-                        },
-                      );
+                      state.response.fold((l) {}, (r) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => DashboardScreen(),
+                          ),
+                        );
+                      });
                     }
                   }),
                   builder: ((context, state) {
@@ -157,21 +179,24 @@ class ViewContainer extends StatelessWidget {
                       return ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           textStyle: TextStyle(
+                            color: Colors.black,
                             fontFamily: 'dana',
                             fontSize: 20,
                           ),
                           backgroundColor: Colors.blue[700],
+                          foregroundColor: Colors.black,
                           minimumSize: Size(200, 48),
                         ),
                         onPressed: () {
                           BlocProvider.of<AuthBloc>(context).add(
-                            AuthLoginRequest(
+                            AuthRegisterRequest(
                               _usernameTextController.text,
                               _passwordTextController.text,
+                              _passwordConfirmTextController.text,
                             ),
                           );
                         },
-                        child: Text('ورود به حساب کاربری'),
+                        child: Text('ثبت نام'),
                       );
                     }
 
@@ -180,30 +205,10 @@ class ViewContainer extends StatelessWidget {
                     }
 
                     if (state is AuthResponseState) {
-                      Widget widget = Text('');
+                      Text widget = Text('');
                       state.response.fold(
                         (l) {
-                          widget = ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              textStyle: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'dana',
-                                fontSize: 20,
-                              ),
-                              backgroundColor: Colors.blue[700],
-                              foregroundColor: Colors.black,
-                              minimumSize: Size(200, 48),
-                            ),
-                            onPressed: () {
-                              BlocProvider.of<AuthBloc>(context).add(
-                                AuthLoginRequest(
-                                  _usernameTextController.text,
-                                  _passwordTextController.text,
-                                ),
-                              );
-                            },
-                            child: Text('ورود به حساب کاربری'),
-                          );
+                          widget = Text(l);
                         },
                         (r) {
                           widget = Text(r);
@@ -221,13 +226,13 @@ class ViewContainer extends StatelessWidget {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) {
-                          return RegisterScreen();
+                          return LoginScreen();
                         },
                       ),
                     );
                   },
                   child: Text(
-                    'اگر حساب کاربری ندارید ثبت نام کنید',
+                    'اگر حساب کاربری دارید وارد شوید',
                     style: TextStyle(fontFamily: 'dana', fontSize: 16),
                   ),
                 ),

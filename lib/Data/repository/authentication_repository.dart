@@ -26,10 +26,10 @@ class AuthenticationRepository extends IAuthenticationRepository {
     String passwordConfirm,
   ) async {
     try {
-      await _dataSource.register('ali1515', '123456789', '123456789');
+      await _dataSource.register(userName, password, passwordConfirm);
       return right('ثبت نام انجام شد');
     } on ApiExeption catch (ex) {
-      return left(ex.message! ?? 'خطایی رخ داده است');
+      return left(ex.message!);
     }
   }
 

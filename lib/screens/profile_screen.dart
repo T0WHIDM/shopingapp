@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_shop_sample/bloc/authitication/auth_bloc.dart';
-import 'package:flutter_shop_sample/bloc/authitication/auth_state.dart';
-import 'package:flutter_shop_sample/constants/colors.dart';
-import 'package:flutter_shop_sample/custom_widget,dart/category_item_chip.dart';
-import 'package:flutter_shop_sample/main.dart';
-import 'package:flutter_shop_sample/screens/dashboard_screen.dart';
 import 'package:flutter_shop_sample/screens/login_screen.dart';
 import 'package:flutter_shop_sample/utility/auth_manager.dart';
+
+import '../constants/colors.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -23,22 +18,22 @@ class ProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.only(left: 44, right: 44, bottom: 32),
               child: Container(
                 height: 46,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
                 child: Row(
                   children: [
-                    SizedBox(width: 10),
+                    const SizedBox(width: 16),
                     Image.asset('assets/images/icon_apple_blue.png'),
-                    Expanded(
+                    const Expanded(
                       child: Text(
-                        textAlign: TextAlign.center,
                         'حساب کاربری',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: CustomColors.blue,
+                          fontFamily: 'sb',
                           fontSize: 16,
-                          fontFamily: 'SM',
+                          color: CustomColors.blue,
                         ),
                       ),
                     ),
@@ -46,46 +41,13 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                AuthManager.logOut();
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return BlocProvider(
-                        create: (context) {
-                          var authBloc = AuthBloc();
-                          authBloc.stream.forEach((state) {
-                            if (state is AuthResponseState) {
-                              state.response.fold((l) {}, (r) {
-                                globalNavigatorKey.currentState
-                                    ?.pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return DashboardScreen();
-                                        },
-                                      ),
-                                    );
-                              });
-                            }
-                          });
-                          return authBloc;
-                        },
-                        child: LoginScreen(),
-                      );
-                    },
-                  ),
-                );
-              },
-              child: Text('خروج از حساب کاربری'),
-            ),
-            Text(
+            const Text(
               'توحید غلامی',
-              style: TextStyle(fontFamily: 'SB', fontSize: 16),
+              style: TextStyle(fontFamily: 'sb', fontSize: 16),
             ),
-            Text(
+            const Text(
               '09364582386',
-              style: TextStyle(fontFamily: 'SM', fontSize: 10),
+              style: TextStyle(fontFamily: 'sm', fontSize: 10),
             ),
             SizedBox(height: 30),
             Directionality(
@@ -93,35 +55,58 @@ class ProfileScreen extends StatelessWidget {
               child: Wrap(
                 spacing: 20,
                 runSpacing: 20,
-                children: [
-                  // CategoryItemChip(),
-                  // CategoryItemChip(),
-                  // CategoryItemChip(),
-                  // CategoryItemChip(),
-                  // CategoryItemChip(),
-                  // CategoryItemChip(),
-                  // CategoryItemChip(),
-                  // CategoryItemChip(),
-                  // CategoryItemChip(),
-                  // CategoryItemChip(),
-                  // CategoryItemChip(),
-                  // CategoryItemChip(),
+                children: const [
+                  //   CategoryItemChip(),
+                  //   CategoryItemChip(),
+                  //   CategoryItemChip(),
+                  //   CategoryItemChip(),
+                  //   CategoryItemChip(),
+                  //   CategoryItemChip(),
+                  //   CategoryItemChip(),
+                  //   CategoryItemChip(),
+                  //   CategoryItemChip(),
+                  //   CategoryItemChip(),
                 ],
               ),
             ),
-            Spacer(),
-            Text(
+            const Spacer(),
+            GestureDetector(
+              onTap: () {
+                AuthManager.logout();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return LoginScreen();
+                    },
+                  ),
+                );
+              },
+              child: Text(
+                'خروج از حساب کاربری',
+                style: TextStyle(fontFamily: 'dana', color: Colors.red),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
               'اپل شاپ',
               style: TextStyle(
-                fontFamily: 'SM',
+                fontFamily: 'sm',
                 fontSize: 10,
                 color: CustomColors.gery,
               ),
             ),
-            Text(
-              'v-1.1.5',
+            const Text(
+              'v-1.0.00',
               style: TextStyle(
-                fontFamily: 'SM',
+                fontFamily: 'sm',
+                fontSize: 10,
+                color: CustomColors.gery,
+              ),
+            ),
+            const Text(
+              'Instagram.com/Mojava-dev',
+              style: TextStyle(
+                fontFamily: 'sm',
                 fontSize: 10,
                 color: CustomColors.gery,
               ),
