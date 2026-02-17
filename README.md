@@ -11,49 +11,28 @@ This is a simple e-commerce style application developed with Flutter. The main g
 
 
 
-🚀 Getting Started
+## 🛠️ Installation & Setup
 
 To run this project locally, follow these steps:
 
-Clone the repository:
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/T0WHIDM/shopingapp.git
 
-git clone https://github.com/T0WHIDM/shopingapp.git
-cd shopingapp
+2. **Navigate to the project directory:**
+   ```bash
+   cd shopingapp
 
-
-Install dependencies:
-
-flutter pub get
-
-
-Run the application:
-
-flutter run
-
+3. **Install dependencies**:
+   ```bash
+     flutter pub get
+   
+4. **Run the app**:
+   ```bash
+      flutter run
 
 Make sure you have the Flutter SDK installed and properly configured on your system.
 
-
-
-🧩 Project Structure
-
-The project follows the standard Flutter structure:
-
-android/ – Android configuration files
-
-ios/ – iOS configuration files
-
-web/ – Web support files
-
-lib/ – Main source code of the application
-
-main.dart – Entry point of the app
-
-test/ – Unit and widget tests
-
-assets/ – Images, fonts, and other static resources
-
-pubspec.yaml – Project dependencies and configuration
 
 
 
@@ -89,6 +68,4 @@ Since this is a practice project, contributions are optional. Feel free to fork 
 
 
 
-📄 License
 
-No license has been specified yet.
